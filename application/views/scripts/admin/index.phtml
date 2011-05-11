@@ -1,0 +1,31 @@
+<div id="main-wrapper" class="clearfix">
+	<div class="grid_9 white">
+		<div class="prefix_1 grid_7">
+			<h1>Administration</h1>
+			<table width="100%">
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Date Registered</th>
+					<th>Last Login</th>
+					<th>Program Enrolled</th>
+					<th>Edit</th>
+				</tr>
+				<?php foreach($this->users as $user) :?>
+				<tr>   
+					<td><?= $user->fname ?> <?= $user->lname ?></td> 
+					<td><?= $user->email ?></td> 
+					<td>May 1, 2011</td>
+					<td>May 11, 2011</td>
+				    <td>
+						Camp 1<br/>
+					    Camp 2
+					</td>
+					<td>Edit</td>
+				<tr>
+				<?php endforeach; ?>
+			</table>
+			<a href="/admin/logout">logout</a>
+		</div>       
+	</div>
+</div> 

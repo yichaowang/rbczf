@@ -1,0 +1,229 @@
+/* bebas */ 
+
+/*Renewal Body Bootcamp CSS*/
+/*------------Universal Start ------------*/
+body{
+	color: #363636;
+	font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+	background: #191919 url("../images/bg-body.png") repeat left top;
+}
+
+body p{
+	font-weight: 300;
+	font-size: 16px;
+	color :#555;
+}
+
+body p{
+	text-shadow: #999 0px 1px 1px;
+}
+
+body p{
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+h1,h2,h3,h4{
+	font-family: "league-gothic-1","league-gothic-2",sans-serif;
+}
+
+h1{  
+	font-size:3.2em;
+	color: #0795b3;
+}
+
+h2{
+	font-size:2.2em;
+	line-height:1.2em;
+	color:#0795B3;
+}                 
+
+h3{
+	font-size:2em;
+}
+
+
+/*------------Universal End ------------*/
+
+/*------------Structure Begin----------------*/
+div#wrapper{
+	background:#fff;
+	width:900px;
+	margin:0 auto;
+	-moz-box-shadow: 0 0 10px #fff;
+	-webkit-box-shadow: 0 0 10px #fff;
+	box-shadow: 0 0 10px #000;	
+}
+
+div#banner{
+	background: #000 url("../images/bg-banner.png");
+	width:900px;
+	height:180px;
+}
+
+div#main-wrapper {
+	padding:16px 0px;
+	background-image: -webkit-gradient(
+	    linear,
+	    left bottom,
+	    left top,
+	    color-stop(0.05, rgb(37,142,156)),
+	    color-stop(0.53, rgb(60,212,235))
+	);
+	background-image: -moz-linear-gradient(
+	    center bottom,
+	    rgb(37,142,156) 5%,
+	    rgb(60,212,235) 53%
+	);
+	
+}
+
+
+div#welcome{
+	background-color:#fff;         
+	-moz-box-shadow: inset 0 0 2px #888;
+	-webkit-box-shadow: inset 0 0 2px #888;
+	box-shadow: inner 0 0 2px #888;
+}
+
+div#footer{
+	background:#fff;
+	padding:10px;
+}
+
+/*------------Structure End----------------*/
+
+
+/*------------Navigation Start ------------*/   
+div#navigation{
+	margin-top:-35px;
+	padding-left:20px;
+	height:35px;
+	background:transparent url("../images/bg-navigation.png") 0px 180px;
+	text-transform: uppercase;
+}    
+
+div#navigation.progress{
+	background-position: 0px 144px;
+}
+  
+div#navigation.location{
+	background-position: 0px 108px;
+}
+ 
+div#navigation.blog{
+	background-position: 0px 72px;
+}            
+
+div#navigation.testimonials{
+	background-position: 0px 36px;
+}
+
+
+div#navigation li{
+	float:left;
+	text-align:center;
+}
+
+div#navigation li a{
+	text-indent: -3000px;
+	color:#ffffff;
+	width:95px;
+	margin:0px 10px;
+	font-size:16px;
+	text-align:center;
+	display:block;
+	height:36px;
+	padding-left:20px;
+	padding-right:20px;
+	padding-top:5px;
+	text-decoration:none;
+}
+
+div#navigation li a.testimonials{
+	width:140px;
+}
+
+/*------------Slideshow Start ------------*/
+div#slideshow {
+	width:866px;
+	display:block;
+	height: 320px;           
+	background:#616161;
+	border: 1px solid #616161;
+	margin-bottom:20px;    
+	
+}   
+
+/*------------Progress Start ------------*/
+      
+/*------------Misc Start ------------*/  
+.white{
+	background:#fff;
+} 
+
+.box-padding{
+	padding:20px;
+}
+
+.white-border{
+	border: 1px solid #555;
+}
+
+.sand{
+	background-image: url("/images/bg-blur.png");
+	background-repeat: repeat;
+}
+
+
+.button, .button:visited {
+	background: #222 url(overlay.png) repeat-x;
+	display: inline-block;
+	padding: 5px 10px 6px;
+	color: #fff;
+	text-decoration: none;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+	border-bottom: 1px solid rgba(0,0,0,0.25);
+	position: relative;
+	cursor: pointer
+}       
+
+.button:hover	{ background-color: #111; color: #fff; }   
+
+.button:active	{ top: 1px; }             
+
+.small.button, .small.button:visited	{ font-size: 11px}
+
+.button, .button:visited,
+.medium.button, .medium.button:visited{ 
+	font-size: 13px; 
+	font-weight: bold; 
+	line-height: 1; 
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25); 
+}
+
+.large.button, .large.button:visited{ 
+	font-size: 14px; 
+	padding: 8px 14px 9px; 
+}
+
+.super.button, .super.button:visited{
+	 font-size: 34px; 
+	 padding: 8px 14px 9px; 
+}                
+
+.blue.button, .blue.button:visited{ 
+	background-color: #2981e4; 
+}
+.blue.button:hover{                  
+   	background-color: #2575cf; 
+}
+
+
+
+
+
