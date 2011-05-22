@@ -1,10 +1,10 @@
 <?php
 
-class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
+class Application_Model_Users extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'users';
-	protected $_primary = 'uid';
+	protected $_primary = 'id';
 	
 	public function get()
 	{

@@ -1,7 +1,9 @@
 /* bebas */ 
 
 /*Renewal Body Bootcamp CSS*/
-/*------------Universal Start ------------*/
+/*
+	Universal
+*/
 body{
 	color: #363636;
 	font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
@@ -42,10 +44,26 @@ h3{
 	font-size:2em;
 }
 
+label{ 
+	float:left;
+	width:150px;
+}
 
-/*------------Universal End ------------*/
+dt label{
+	float:none;
+}
 
-/*------------Structure Begin----------------*/
+
+/*
+	Table
+*/
+table tr.hover{
+	cursor:pointer;
+}             
+
+/*
+	Structure
+*/
 div#wrapper{
 	background:#fff;
 	width:900px;

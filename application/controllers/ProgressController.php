@@ -58,6 +58,7 @@ class ProgressController extends Zend_Controller_Action
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
 			$this->_redirect('/progress/login');
 		}
+		
 		$userInfo = Zend_Auth::getInstance()->getStorage()->read();
 		$this->view->user = $userInfo;
 	}
@@ -79,7 +80,7 @@ class ProgressController extends Zend_Controller_Action
 					'regdate'       => $values['regdate'],
 					'lastlogindate' => $values['lastlogindate'] 
 				);       
-				$user = new Application_Model_DbTable_User;
+				$user = new UsersTable;
 				$user->insert($data);
 			  	$this->_helper->getHelper('FlashMessenger')->addMessage('Congratulation on your first step to being fit!');
 		        $this->_redirect('/progress/success');
