@@ -13,22 +13,37 @@ class Application_Form_UserCreate extends Zend_Form
 		$fname->setLabel('First Name:')
 				->setRequired(true)
 				->addFilter('StripTags') 
-				->addFilter('StringTrim') 
+				->addFilter('StringTrim')
 				->addValidator('NotEmpty');
 				
 	   	$lname = new Zend_Form_Element_Text('lname');
 		$lname->setLabel('Last Name:')
 				->setRequired(true)
 				->addFilter('StripTags') 
-				->addFilter('StringTrim') 
-				->addValidator('NotEmpty');
+				->addFilter('StringTrim')
+				->addValidator('NotEmpty'); 
+				
+
+		$validator = new Zend_Validate_Db_NoRecordExists(array(
+			'table'     => 'users',
+			'field'     => 'email'
+			));
+		$validator->setMessage(
+			"'%value%' is already registered with us. Please contact administrator if you believe there is a error",
+			Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND 
+			);
+	       
 		
 		$email = new Zend_Form_Element_Text('email');
 		$email->setLabel('Email:')
 				->setRequired(true)
 				->addFilter('StripTags') 
 				->addFilter('StringTrim') 
-				->addValidator('EmailAddress');
+				->addValidator('EmailAddress')
+				->addValidator('Db_NoRecordExists', false, array(
+					'table'     => 'users',
+			        'field'     => 'email'
+				));
 			
   	 	$password = new Zend_Form_Element_Password('password');
 	    $password->setLabel('Password:')
@@ -40,8 +55,8 @@ class Application_Form_UserCreate extends Zend_Form
 		      'label' => 'Please enter two words displayed below:',
 		       'required' => true,
 		       'captcha' => array(
-		           'pubkey' => '6LdWNsQSAAAAAPQNeZRr2gclq2dmgaRmXhKV5MrJ',
-		           'privkey' => '6LdWNsQSAAAAAMJS1fZj57UVJPcgHzeKzJcdxeRG',
+		           'pubkey' => '6Ldf3sYSAAAAAIifYDjWytu_8GOxXlPkFMwCPGeR',
+		           'privkey' => '6Ldf3sYSAAAAAKfn-xewC2lBT5kfqyqD56fAcRML',
 		           'captcha' => 'reCaptcha'
 		       )   
 		));      

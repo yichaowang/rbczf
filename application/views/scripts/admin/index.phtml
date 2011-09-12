@@ -1,37 +1,55 @@
 <div id="main-wrapper" class="clearfix">
 	<div class="grid_9 white">
-		<div class="grid_7">
+		<div class="grid_9">
 			<h1>Administration</h1>
-			<div>
-				<a href="/admin">Dashboard</a> | 
-				<a href="/admin/program">Program</a> |
-				<a href="/admin/enrollment">Enrollment</a> |
-				<a href="/admin/logout">Logout</a>
-				<br><br>
+			<?php echo $this->partial('admin/nav_partial.phtml')?>
+			<div class="clear"></div>
+			<div class="grid_4 alpha">
+				<h2>Clients</h2>
+				<br>  
+				<table id="admin-client" width="100%">
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Last Login</th>
+					</tr>
+					<?php 
+					foreach($this->users as $user){ ?>
+					<tr class="<?=$user['id']; ?>">   
+						<td><?= $user['fname'] ?> <?= $user['lname'] ?>
+						<?php if($user['is_admin']==1) echo "<img src='/images/icon-key.png'/>"?>
+						</td> 
+						<td><?= $user['email'] ?></td> 
+						<td><?php echo date("m/d-Y", $user['lastlogindate']) ?></td>
+					<tr>
+					<?php } ?>
+				</table>
 			</div>
-			<table width="100%">
-				<tr>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Date Registered</th>
-					<th>Last Login</th>
-					<th>Program Enrolled</th>
-					<th>Edit</th>
-				</tr>
-				<?php foreach($this->users as $user) :?>
-				<tr>   
-					<td><?= $user->fname ?> <?= $user->lname ?></td> 
-					<td><?= $user->email ?></td> 
-					<td>May 1, 2011</td>
-					<td>May 11, 2011</td>
-				    <td>
-						Camp 1<br/>
-					    Camp 2
-					</td>
-					<td>Edit</td>
-				<tr>
-				<?php endforeach; ?>
-			</table>
+			<div id="admin-client-detail" class="grid_4 omega"> 
+				<?php 
+					foreach($this->users as $user){
+				?>
+					<div class="<?=$user['id']?>"> 
+						<p><span class="fname editible-textbox"><?=$user['fname']?>&nbsp;</span><span class="lname editible-textbox"><?=$user['lname']?></span></p>
+						<label>Email:</label><span class="email"><?=$user['email']?></span>
+						<div class="clear"></div>
+						<label>Password</label><span class="rst_pwd"><a class="ui-button-apperence">Reset to 123456</a></span>
+						<div class="clear"></div>
+						<label>Date Registered:</label><span><?=date("m/d-Y", $user['regdate'])?></span>
+						<label>Program Enrolled:</label> 
+						<span><?php foreach($user['p_enrolled'] as $u_program){ ?><?=$u_program['pname']?><br/><?php }?></span>
+						<div class="clear"></div>
+						<label>Admin:</label> 
+						<span><?php if($user['is_admin']==1){ echo "Yes <img src='/images/icon-key.png'/>";}else{echo "No";};?></span> 
+						<div class="clear"></div>
+					</div>
+			    <?php 
+					}
+				?>
+				
+				 
+			</div>
+			<div class="clear"></div>
 		</div>       
 	</div>
 </div> 

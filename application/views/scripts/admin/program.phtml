@@ -1,41 +1,59 @@
-<script type="text/javascript">
-	
-</script>
-
 <div id="main-wrapper" class="clearfix">
-	<div class="grid_9 white">
+	<div class="grid_9 white" id="admin-program">
 		<div class="grid_9">
 			<h1>Programs</h1> 
-			<div>
-				<a href="/admin">Dashboard</a> | 
-				<a href="/admin/program">Program</a> |
-				<a href="/admin/enrollment">Enrollment</a> |
-				<a href="/admin/logout">Logout</a>
-				<br><br>
-			</div>
-			<h2>Program List</h2>
-			<?php foreach ($this->programs as $program){?>
-				<table>
-					<?=$program["name"]?> 
-					<a href="/admin/program/update/<?=$program["id"]?>">edit</a> | 
-					<a href="/admin/program/view/<?=$program["id"]?>">view detail</a> |
-					<a href="/admin/program/delete/<?=$program["id"]?>" onclick="return confirm('All users measurements of this program will be lost. Continue?')">delete</a>
-				</table>
+			<?php echo $this->partial('admin/nav_partial.phtml')?>
+			<div id="admin-program-list">
+				<h2>Program List</h2>
+				<ul>
+				<?php foreach ($this->programs as $program){?>
+					<li>
+						<div style="float:left; width:300px"><?=$program["name"]?></div> 
+						<input class="program-switch" name="checkbox.1.2" type="checkbox" id="check" <?php if ($program["active"]==1){ echo 'checked=""'; } ?> style="position: absolute; z-index: -1; visibility: hidden; ">  
+						<input name="program_id" type="hidden" value=<?=$program["id"]?>>	
+						<a class="ui-button-apperence" href="/admin/program/update/<?=$program["id"]?>">Edit</a> &nbsp;
+						<a class="ui-button-apperence" href="/admin/program/view/<?=$program["id"]?>">Detail</a> &nbsp; 
+						<a class="ui-button-apperence" href="/admin/program/delete/<?=$program["id"]?>" onclick="return confirm('All users measurements of this program will be lost. Continue?')">Delete</a> &nbsp; 
+						<a class="ui-button-apperence" href="/admin/program/paypal/<?=$program["id"]?>">Paypal</a> 
+					</li>
+					<hr>				   
 				<?php }?>
-				<a href="/admin/program">Add New Program</a>
-				<br>
-				<br>
-				
+				</ul>
+			</div>
+			<br>
+			<a class="ui-button-apperence" href="/admin/program#add-program">Add New Program</a>
+			<br><br>
    		</div>
-		<div class="grid_4">
-			<h2>Add/Edit</h2>
-			<?= $this->form; ?>
+		<?php  if(isset($this->program_form)){?>
+		<div class="grid_4" name="add-program" id="add-program">
+				<h2>Add/Edit</h2>
+				<?= $this->program_form; ?>
 			<br><br>
 		</div>
+		<?php }?>  
+				
+		<?php  if(isset($this->paypal)){?>
+			<div class="grid_5">
+				<h2>Paypal</h2>
+				<lable for="paypal_code">Paypal button code:</lable>
+				<textarea name="paypal_code" cols="60" rows="15"><?php if(isset($this->paypal_code)){echo $this->paypal_code;}?></textarea>
+				<input name="pid" type="hidden" value="<?=$this->paypal_pid?>"/>
+				<br>
+				<button id="admin-paypal-submit">Submit</button>
+				<br><br>
+			</div>
+			<div class="grid_2">
+				<h2>Paypal Preview</h2>
+				<div style="padding-top:70px; padding-left:70px">
+					<?php if(isset($this->paypal_code)){echo $this->paypal_code;}?> 
+				</div>
+			</div>
+		<?php }?>
+	   
+		
 		<?php  if(isset($this->measures)){?>
 		<div class="grid_4">
-			<h2>Program Detail Measurements</h2>
-			<?=$this->programDetail[0]['name']?> <br>
+			<h2><?=$this->programDetail[0]['name']?> <br></h2>
 			<table width="100%">
 				<tr>
 					<th>Name</th>

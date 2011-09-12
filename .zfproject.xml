@@ -27,6 +27,9 @@
         <controllerFile controllerName="Admin">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="About">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory enabled="false"/>
@@ -35,6 +38,8 @@
           <dbTableFile dbTableName="User"/>
         </dbTableDirectory>
         <modelFile modelName="User"/>
+        <modelFile modelName="Contents"/>
+        <modelFile modelName="Testimonials"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -59,6 +64,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Admin">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="About">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="about">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="admin">
+            <viewScriptFile forActionName="contents"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="admin">
+            <viewScriptFile forActionName="testimonials"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
@@ -99,6 +116,7 @@
           <testApplicationControllerFile filesystemName="BlogControllerTest.php"/>
           <testApplicationControllerFile filesystemName="TestimonialsControllerTest.php"/>
           <testApplicationControllerFile filesystemName="AdminControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="AboutControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>

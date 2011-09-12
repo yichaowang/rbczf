@@ -4,14 +4,16 @@
 	<div class="grid_9 white">
 		<div class="grid_4">
 			<img style="padding-top: 10px"src="/images/logo-blue.png">
+			<p><?php echo $this->description;?></p>
 			<p> 
-				Hours:<br>
-				M-F 8:00 AM - 5:00 PM<br/>
+				<?php echo ($this->hour != null) ? "Hours:<br>".$this->hour."<br/>":""; ?>
 			</p>
 			<p> 
 				Address:<br>
-				100 Youell Ave SE<br/>
-				Grand Rapids, MI, 49506
+				<?php echo $this->add1;?><br/>
+				<?php echo ($this->add2 != null) ? $this->add2."<br/>":""; ?>
+				<?php echo $this->city;?><br/>
+				
 			</p>
 		</div> 
 		<div class="grid_3">

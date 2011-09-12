@@ -44,7 +44,16 @@ class ProgressController extends Zend_Controller_Action
 					$sess->group = "user"; 
 					$userInfo = $authAdapter->getResultRowObject();  
 					$authStorage = $auth->getStorage();  
-					$authStorage->write($userInfo); 
+					$authStorage->write($userInfo);
+					$user_model = new Application_Model_Users;
+					$update_status = $user_model->update(
+						array(
+							'lastlogindate' => time(),
+							), 
+						array(
+							'id = ?' => $userInfo->id
+							)
+						);
 					$this->_redirect('/progress/index');  
 				} else {
 					$this->view->message = "Email or password is incorrect. Please try again.";
@@ -58,9 +67,37 @@ class ProgressController extends Zend_Controller_Action
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
 			$this->_redirect('/progress/login');
 		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->group != "user") $this->_redirect('/progress/login');
 		
+		$db = Zend_Db_Table::getDefaultAdapter(); 
 		$userInfo = Zend_Auth::getInstance()->getStorage()->read();
-		$this->view->user = $userInfo;
+		$this->view->user = $userInfo; 
+		
+	}
+	
+	public function userprogressAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/progress/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->group != "user") $this->_redirect('/progress/login'); 
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+
+		$db = Zend_Db_Table::getDefaultAdapter(); 
+		$userInfo = Zend_Auth::getInstance()->getStorage()->read();
+		$uid = $userInfo->id;
+
+		$user_details = $db->select()
+			->from(array('u'=>'users'), array())
+			->join(array('p'=>'users_programs') ,'u.id = p.user_id', array('measure' => 'u_measure'))
+			->join(array('pn'=>'programs'),'p.program_id = pn.id', array('pname'=>'name'))
+			->where('u.id = ?', $uid)
+			->query()
+			->fetchAll();
+		echo json_encode($user_details);
 	}
 	
 	public function createAction(){
@@ -73,19 +110,35 @@ class ProgressController extends Zend_Controller_Action
 				$values['regdate'] = time();
 				$values['lastlogindate'] = time();
 				$data = array(
-					'fname'         => $values['fname'],
-					'lname'         => $values['lname'],
+					'fname'         => ucfirst(strtolower($values['fname'])),
+					'lname'         => ucfirst(strtolower($values['lname'])),
 					'email'         => $values['email'],
 					'password'      => $values['password'],
 					'regdate'       => $values['regdate'],
 					'lastlogindate' => $values['lastlogindate'] 
 				);       
-				$user = new UsersTable;
+				$user = new Application_Model_Users;
 				$user->insert($data);
 			  	$this->_helper->getHelper('FlashMessenger')->addMessage('Congratulation on your first step to being fit!');
 		        $this->_redirect('/progress/success');
 			}
 		}
+	}  
+	
+	public function checkpwdAction(){ 
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/progress/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->group != "user") $this->_redirect('/progress/login'); 
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+		
+		$user_pwd = $this->_getParam('old_pwd');
+		$user_model = new Application_Model_Users;
+		$user_email = Zend_Auth::getInstance()->getStorage()->read()->email;
+		echo $user_email;
 	}
 	
 	public function logoutAction()

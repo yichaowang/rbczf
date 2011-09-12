@@ -1,0 +1,37 @@
+<div id="main-wrapper" class="clearfix">  
+	<div class="grid_9 white" id="admin-program">
+		<div class="grid_9">
+			<h1>Website Contents</h1> 
+			<?php echo $this->partial('admin/nav_partial.phtml')?> 
+		</div>   
+		<div class="clear"></div>
+		<div id="admin-contents" class="grid_8">
+			<h2>Introduction</h2>  
+			<p class="editable" id="introduction"><?=$this->intro?></p>
+			<h2>About</h2> 
+			<p class="editable" id="about"><?=$this->about?></p>
+			<h2>Location</h2>
+			<div class="label-list admin-address">
+				<label>Description:</label><span id="location_description"><?=$this->description?></span>
+				<label>Hour (leave empty if do not want to display):</label><span id="location_time"><?=$this->hour?></span>
+				<label>Address Line 1:</label><span id="location_address_1"><?=$this->add1?></span> 
+			    <label>Address Line 2:</label><span id="location_address_2"><?=$this->add2?></span>
+				<label>City, States, Zip:</label><span id="location_city_state_zip"><?=$this->city?></span>
+			</div> 
+			<div class="clear"></div>
+			<br>
+			 
+			<h2>Fackbook Link</h2> 
+			<div class="label-list">
+				<label>Link Address:</label><span id="fb_link"><?=$this->fb?></span>
+			</div>
+			<div class="clear"></div>
+			<br>
+			<h2>Twitter Link</h2>
+			<div class="label-list">
+				<label>Link Address:</label><span id="twitter_link"><?=$this->twt?></span>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>

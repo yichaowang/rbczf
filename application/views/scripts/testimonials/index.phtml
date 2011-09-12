@@ -1,4 +1,18 @@
 <?php $this->placeholder('page')->set("testimonials") ?>
 <div id="main-wrapper" class="clearfix">
-	<br /><br /><center>View script for controller <b>Testimonials</b> and script/action name <b>index</b></center> 
+	<div class="grid_9">
+		<div class="box-padding white">
+			<h1>Client's Testimonials</h1>
+			<?php foreach ($this->testimonials as $testimonial) {?>
+				<div class="talkbubble-wrapper">
+					<div class="bub-top"></div>
+					<div class="bub-mid">
+					   <h2><?=$testimonial->name?> <span>(<?=$testimonial->from?>)</span>:</h2>
+					   <p><?=$testimonial->content?></p>  
+					</div>
+					<div class="bub-btm"></div>
+				</div>
+			<?php }?> 
+		</div>
+	</div>
 </div>

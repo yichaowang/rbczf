@@ -1,10 +1,35 @@
 <div id="main-wrapper" class="clearfix">
 	<div class="grid_9 white">
-		<div class="prefix_1 grid_7">   
-			<?=$this->user->fname?><br/>
-			<?=$this->user->lname?><br/>
-			<?=$this->user->email?><br/>
-			<a href="/progress/logout">logout</a>
+		<div id="progress-header" class="grid_8">
+			<div class="grid_4 alpha" >
+				<img src="/images/bg-progress-banner.png" />
+			</div>
+			<div class="grid_4 omega  progress-settings">
+				<?=$this->user->fname?> <?=$this->user->lname?> (<?=$this->user->email?>)
+				<a class='ui-button-apperence' style="float:right" href="/progress/logout"><span class='icon-exit'>Log out</span></a>
+				<br>
+				<hr/>
+				 
+				<a id='change-pwd' href="/progress/#">Change Password</a>  
+				
+				<div id="dialog-form" title="Change Password">
+					<p class="validateTips"></p>
+					<form>
+					<fieldset>
+						<label for="oldpwd">Old Password</label>
+						<input type="password" name="old-pwd" id="old-pwd" class="text ui-widget-content ui-corner-all" />
+						<label for="newpwd">New Password</label>
+						<input type="password" name="new-pwd" id="new-pwd" value="" class="text ui-widget-content ui-corner-all" />
+						<label for="password">Confirm Password</label>
+						<input type="password" name="confirm-pwd" id="comfirm-pwd" value="" class="text ui-widget-content ui-corner-all" />
+					</fieldset>
+					</form>
+				</div>                                                           
+			</div>
 		</div>
+		<div class="clear"></div>
+		<div class="grid_8" id="progress-meter">
+		</div>
+		<div class="clear"></div>
 	</div>
 </div>

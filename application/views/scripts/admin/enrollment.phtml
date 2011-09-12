@@ -1,62 +1,36 @@
-<?php 
-	$this->dojo()->enable();
-	echo $this->dojo(); 
-?>
 <div id="main-wrapper" class="clearfix">
-	<div id="enrollment" class="grid_9 tundra white">
+	<div id="enrollment" class="grid_9 tundra white pg-bt-padding">
 		<div class="grid_7">
 			<h1>Administration</h1>
-			<div>
-				<a href="/admin">Dashboard</a> | 
-				<a href="/admin/program">Program</a> |
-				<a href="/admin/enrollment">Enrollment</a> |
-				<a href="/admin/logout">Logout</a>
-				<br><br>
-			</div>
+			<?php echo $this->partial('admin/nav_partial.phtml')?>
 		</div>
 		<div class="clear"></div>
 		<div class="grid_3">
 			<table id="program-tb" width="100%">
 				<tr class="title">
-					<th>Program Name</th>
+					<th>Programs</th>
 				</tr>
 			<?php foreach ($this->programs as $program){?>
 				<tr class="<?=$program->id?>">
-					<td><?=$program->name?></td>
+					<td class="pname"><?=$program->name?></td>
 				</tr>
 			<?php }?>
 			</table>
 			   
 		</div>
 		<div class="grid_2">
-			<table id="user-tb" width="100%">
+			<table id="user-tb" cellspacing="1px" width="100%">
 				<tr class="title">
-					<th>Client Name</th>
+					<th>Client in program</th>
 				</tr>	
-				<?php if($this->users!=null) { foreach ($this->users as $user){?>
-				<tr>
-					<td><?=$user->fname?> <?=$user->lname?></td>
-				</tr> 
-				<?php }}?>   
 			</table>
-		    <?=$this->adduserform?>
-		</div>
-		<div class="grid_3">
-			Measurements
 			<form>
-			Before
-			<ul>
-				<li><label for="body">Body Index:</label> 
-					<input id="body" type="text" size="5"/></li>
-				<li><label>Jack (per minute):</label> <input type="text" size="5"/></li>
-				<li><label>Squd (per minute):</label> <input type="text" size="5"/></li>
-			</ul>
-			After
-			<ul>
-				<li><label>Body Index:</label><input type="text" size="5"/></li>
-				<li><label>Jack (per minute):</label> <input type="text" size="5"/></li>
-				<li><label>Squd (per minute):</label> <input type="text" size="5"/></li>
-			</ul>
+				<input style="position:relative; top:-3px" id="add-user-to-program" readonly type="text" size="10"/>
+				<img src="/images/icon-add.png"/>
+			</form>	
+		</div>
+		<div id="measures_data" class="grid_3">
+			Measurements<br>
 			
 		</div>       
 	</div>
