@@ -26,18 +26,18 @@ body p{
 }
 
 h1,h2,h3,h4{
-	font-family: "league-gothic-1","league-gothic-2",sans-serif;
-}
+	font-family: "Oswald", sans-serif;
+} 
 
 h1{  
-	font-size:3.2em;
-	line-height:1em;
+	font-size:2em;
+	line-height:2em;
 	color: #0795b3;
 }
 
 h2{
-	font-size:2.2em;
-	line-height:1.2em;
+	font-size:1.8em;
+	line-height:1.8em;
 	color:#0795B3;
 }                 
 
@@ -142,15 +142,16 @@ div#index-program h3{
 }
 
 ul#index-program-list{
-	font-family: "league-gothic-1","league-gothic-2",sans-serif;
-	font-size:28px;
+	font-family: sans-serif, "Oswald";
+	font-size:18px;
+	line-height:22px;
 	color:#fff;
 } 
 
 ul#index-program-list li{
 	background: #3cd4eb url('/images/bg-programlist.png') no-repeat top right; 
 	margin-bottom:15px;
-	padding-right:73px;
+	padding-right:68px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -180,7 +181,7 @@ ul#index-program-list > div{
 }
         
 ul#index-program-list .blue div{
-	padding:1px 7px 0 7px;
+	padding:7px;
 	
 }
 
@@ -350,10 +351,13 @@ div.progress-meter-bottom{
 	height:50px;
 	width:279px;
 }
-
+ 
+/*
+	Admin - General
+*/                 
 
 /*
-	Admin - Program
+	Admin - Program - Editing
 */                 
 div#admin-program-list hr{
 	width:700px;
@@ -361,7 +365,50 @@ div#admin-program-list hr{
 	margin: 2px;
 	border: none;
 	border-top:1px solid #eee;
+}                             
+
+div.program-detail li{
+	display:block;
+	font-size:12px;
+	vertical-align:middle;
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+	background: -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+	background: linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* W3C */   
+	width:250px;
+	border:1px #ccc solid;
+	padding:1px 10px;
+	margin-top:4px;
 }
+div.program-detail li div.item-name{
+	float:left;
+	width:160px;
+} 
+
+div.program-detail li div.item-unit{
+	float:left;
+	width: 85px;
+}   
+
+/*
+	Admin - Program - Preview
+*/
+div.admin-program-detail-preview th{
+	padding-left:10px;
+	border-bottom:1px solid #ddd;
+	border-right:1px solid #ddd;
+	background-color:#eee;
+}  
+
+div.admin-program-detail-preview td{
+	font-size:14px;
+	padding-left:10px;
+	border-bottom:1px solid #eee;
+}
+
+         
+
 
 /*
 	Admin - Clients
@@ -517,6 +564,11 @@ div.admin-testimonials-wrapper p{
 	margin-top:-5px;
 	padding-bottom:10px;
 	padding-left:25px !important;
+}
+
+.icon-loading-middle{
+	background:url("/images/icon-loading.gif") no-repeat center center;
+	height:200px;
 }  
 
 #fb-logo, #twt-logo{

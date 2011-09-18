@@ -2,13 +2,7 @@
 
 class AdminController extends Zend_Controller_Action
 {
-	public function init()
-	{
-		$contextSwitch = $this->_helper->getHelper('contextSwitch');
-		$contextSwitch->addActionContext('enrollment', 'json')
-					  ->initContext();
-	}
-
+	
 	public function loginAction()
 	{
 		if(Zend_Auth::getInstance()->hasIdentity())  
@@ -56,7 +50,8 @@ class AdminController extends Zend_Controller_Action
 	{                            
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
 			$this->_redirect('/admin/login');
-		}
+		}                                           
+		
 		$sess = new Zend_Session_Namespace('renewal.auth');
 		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');   
 
@@ -95,25 +90,24 @@ class AdminController extends Zend_Controller_Action
 		 
 		$state = $this->_getParam('state');
 		$id = $this->_getParam('id'); 
-		
-		//$this->view->numberone == array("apple","pear");
-	    //print_r($this->view->numberone);
 
-		if ($state == "update" or $state == "view"){
-			$row = $program->find($id); 				
-			$this->view->program_form = new Application_Form_Program($state, $row);
-			$programDetail = $program->find($id); 
-			$measures = $programDetail[0]['p_measure'];
+		if ($state == "detail"){
+			//$row = $program->find($id); 				
+			//$this->view->program_form = new Application_Form_Program($state, $row);
+
+			$program_detail = $program->find($id);
+			 
+			$measures = $program_detail[0]['p_measure'];
 			$measures = explode(';',$measures);
 			$measures = preg_grep('#\S#', array_map('trim', $measures));			
 			for ($i=0; $i<count($measures);$i++) {
 				$item = explode(':', $measures[$i]);
 				$measure[$i][] = trim($item[0]);
 				$measure[$i][] = trim($item[1]);
-				$measure[$i][] = trim($item[2]);
+				//$measure[$i][] = trim($item[2]);
 			}  
 			
-		    $this->view->programDetail = $programDetail;
+		    $this->view->program_detail = $program_detail;
 			$this->view->measures = $measure;
 			 
 			
@@ -146,7 +140,103 @@ class AdminController extends Zend_Controller_Action
 			//$this->_redirect('/admin/program/update/'.$id);
 		}
 
-	} 
+	}
+	
+	public function programdetailAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}                                      
+
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+		
+		$this->_helper->layout->disableLayout(); 
+		 
+		$program_model = new Application_Model_Programs;
+		$id = $this->_getParam('id');
+
+		$program_detail = $program_model->find($id);
+
+		$measures = $program_detail[0]['p_measure'];
+		$measures = explode(';',$measures);
+		$measures = preg_grep('#\S#', array_map('trim', $measures));			
+		for ($i=0; $i<count($measures);$i++) {
+			$item = explode(':', $measures[$i]);
+			$measure[$i]['name'] = trim($item[0]);
+			$measure[$i]['unit'] = trim($item[1]);
+		}  
+
+		$this->view->program_detail = $program_detail;
+		$this->view->measures = $measure;    
+
+		$this->getHelper('viewRenderer')->renderScript('admin/partial/program/detail_preview.phtml');
+	}
+	
+	public function programnameAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}                                      
+		
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+		
+		$id = $this->_getParam('id');
+		$value = stripslashes($this->_getParam('value'));
+
+		$program_model = new Application_Model_Programs;
+
+		$update_status = $program_model->update(
+			array('name' => $value),
+			array('id = ?' => $id)
+		);
+		  
+		echo $value;   
+	}   
+	
+	public function programitemAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}                                      
+		
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+		 
+		$pid = $this->_getParam('pid');
+		$id  = $this->_getParam('id');
+		$type = ($this->_getParam('item_type')=='item-unit') ? 1 : 0;
+		$value = stripslashes($this->_getParam('value'));       
+		
+		$program_model = new Application_Model_Programs;
+		$program_detail = $program_model->find($pid)->current();
+		$detail = $program_detail['p_measure'];  
+		$items = explode(";", $detail);
+		$items = preg_grep('#\S#', array_map('trim', $items));
+		$items_size = count($items);
+		for ($i=0;$i<$items_size;$i++){
+			$items[$i] = explode(":",$items[$i]);
+		}   
+		$items[$id][$type] = $value;
+		
+		$new_items = array();
+	   	foreach($items as $item){
+			$new_items[] = implode(":",$item);
+		}                              
+		$new_items = implode(";",$new_items); 
+		
+		//$update_status = $program_model->update(
+		//	array('p_measure' => $new_items),
+		//	array('id = ?' => $pid)
+		//);
+	  
+		echo $value;
+			
+	}
 	
 	public function programactiveAction(){
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
@@ -502,17 +592,5 @@ class AdminController extends Zend_Controller_Action
 		Zend_Auth::getInstance()->clearIdentity();
 		$this->_redirect('/admin/login');
 	}
-
-	public function userAction()
-	{
-	}
-
-	public function progressAction()
-	{
-
-	}
-
-
-
 }
 

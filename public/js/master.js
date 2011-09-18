@@ -1,7 +1,41 @@
-$(document).ready(function() { 
+var RBC = RBC || {};  
+
+RBC = {
+	admin:{},
+	utility:{}
+};            
+
+RBC.utility = (function(){
+	return{
+		reloadCSS : function(){
+			var href = $('#mastercss').attr('href').split("?")[0];
+			//var new_href = ;
+			$('#mastercss').attr('href', href+'?reload='+ new Date().getTime());
+			//return new_href;                                               1
+		}
+	} 
+}());
+
+RBC.admin.program =(function (){ 
+	var displayDetail = function (program_id,display_element) {
+		var pid = program_id,
+		 	view = display_element;
+		view.empty().html("<div class='icon-loading-middle'></div>")
+		view.load('/admin/programdetail',{id:pid}); 
+	};
+	
+	return {
+		displayDetail:displayDetail
+	};
+}());  
+
+var c = RBC.utility.reloadCSS;
+
+$(document).ready(function() {  
+		
 	$(window).focus(function(){
-		console.log("refreshing...")
-		location.reload(true);
+		//RBC.utility.reloadCSS();
+		//location.reload(true);
 	});
 	
 	if ($('#index-program').length>0){
@@ -240,7 +274,7 @@ $(document).ready(function() {
 
 	}
 	
-	if ($('#admin-program-list').length>0){ 
+	if ($('#admin-program-list').length>0){ 	
 		$('input:checkbox').checkbox().bind({
 			click:function(){
 				var pid = $(this).siblings('input[name$=program_id]').val(),
@@ -272,6 +306,42 @@ $(document).ready(function() {
 				)
 			}
 		});
+		
+		if ($('.program-detail').length>0){
+			$('span.program-name').editable('/admin/programname',{
+				submitdata: {id: $('span.program-name').attr('class').split(' ')[1]},
+				indicator : "<img src='/images/icon-loading.gif'>",
+				type	  : "text",
+				tooltip   : "Click to edit...",
+				submit  : 'Update',
+				style  : "inherit"
+			});
+			
+			$('.item-name span, .item-unit span').editable('/admin/programitem',{
+				submitdata: function(){
+					return{
+						pid: ($('span.program-name').attr('class').split(' ')[1]),
+						id: $(this).attr('class'),
+						item_type: $(this).parent('div').attr('class')
+					}
+				},
+				indicator : "<img src='/images/icon-loading.gif'>",
+				type	  : "text",
+				tooltip   : "Click to edit...",
+				submit  : 'Update',
+				style  : "inherit",
+				//callback: function()
+			});     
+		}     
+		
+		$("a.program-detail").bind({
+			click : function(){
+				id = $(this).attr('class').split(" ")[0];
+				RBC.admin.program.displayDetail(id,$(".program_right"))
+				return false;
+			}
+		});
+		
 	};  
 	
 	if ($('table#admin-client').length>0){
@@ -298,7 +368,9 @@ $(document).ready(function() {
 						}
 					}, 
 					indicator : "<img src='/images/icon-loading.gif'>",
-					tooltip   : "Click to edit...",
+					tooltip   : "Click to edit...", 
+					type	  : "text",
+					submit  : 'Update',
 					style  : "inherit"
 				});
 				$('.rst_pwd').bind({
@@ -661,13 +733,72 @@ $(document).ready(function() {
 		});
 			 
 		
-	}
+	}; 
+		
+	globalVars={
+		init:function(){
+			this.initially=[];
+			for(var i in window){this.initially[i]=true};
+		},
+		get:function(x){
+			var win=window;
+			if(navigator.userAgent.toLowerCase().indexOf("msie")>=0 && window["ActiveXObject"]){
+				win=this.ieFix()
+			};
+			var obj={};
+			var ffx=',addEventListener,location,document,navigator,event,frames,';
+			for(var i in win){
+				if(i=="fullScreen"){continue};
+				var a=true;
+				if(this.initially[i] && typeof window[i]=="function"){this.initially[i]=false};
+				a=a && !(this.initially[i]);
+				a=a && !(window[i]===undefined);
+				a=a && !(window[i]===null);
+				a=a && (i.indexOf("[[")<0);
+				a=a && (window[i]+"").indexOf("[native code]")<0;
+				var b=a;
+				a=a && (window[i]+"").indexOf("[object HTML")!=0;
+				if(a!=b){b=false} else {b=true};
+				a=a && (window[i]+"").indexOf("[object Window")!=0;
+				a=a && (window[i]+"").indexOf("[object]")!=0;
+				a=a && ((window[i]+"")!="[function]");
+				a=a && ((window[i]+"")!="(Internal Function)");
+				a=a && (!(typeof window[i]=="function" && (window[i]+"").indexOf("<Logger")==0));
+				a=a && (i!="NaN");
+				a=a && (i!="0" && i!="1");		
+				a=a && (i!="Infinity");
+				a=a && (i!="Math");
+				a=a && ffx.indexOf(','+i+',')<0;
+				if(x && b){a=true};
+				if (a){obj[i]=window[i]};
+			};
+			obj["globalVars"]=globalVars;
+			if(window["onload"]){obj.onload=onload};
+			return obj
+		},
+		getAll:function(){return this.get(true)},
+		getOwn:function(){return this.get()},
+		print:function(){
+			var win=globalVars.getOwn();  /*returns an object containing global variables*/
+			var x=[];
+			for (var i in win){x.push(i)};
+			console.log(x.join("\n"));
+		},
+		printAll:function(){
+			var win=globalVars.getAll(); 
+			var x=[];
+			for (var i in win){x.push(i)};
+			console.log(x.join("\n"));
+		}
+	};    
+	
+	globalVars.init();
 	
 	
 	//buttons
-	var timer_before, timer_after, timer_total;
-	timer_before=new Date();
+	//var timer_before, timer_after, timer_total;
+	//timer_before=new Date();
 	$('.ui-button-apperence').button();
-	timer_after=new Date();
-	console.log("button time: "+(timer_after-timer_before)+" ms");
+	//timer_after=new Date();
+	//console.log("button time: "+(timer_after-timer_before)+" ms");
 })
