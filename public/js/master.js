@@ -1,7 +1,9 @@
 var RBC = RBC || {};  
 
 RBC = {
-	admin:{},
+	admin:{
+		program:{}
+	},
 	utility:{}
 };            
 
@@ -9,23 +11,93 @@ RBC.utility = (function(){
 	return{
 		reloadCSS : function(){
 			var href = $('#mastercss').attr('href').split("?")[0];
-			//var new_href = ;
 			$('#mastercss').attr('href', href+'?reload='+ new Date().getTime());
-			//return new_href;                                               1
 		}
 	} 
 }());
 
-RBC.admin.program =(function (){ 
-	var displayDetail = function (program_id,display_element) {
-		var pid = program_id,
-		 	view = display_element;
-		view.empty().html("<div class='icon-loading-middle'></div>")
-		view.load('/admin/programdetail',{id:pid}); 
+RBC.admin.program =(function (){
+	var detail = {
+		preview : function(program_id, display_element){
+			var pid = program_id,
+				view = display_element;
+				view.empty().html("<div class='icon-loading-middle'></div>");
+				view.load('/admin/programdetail',{id:pid, state:"preview"});
+		},
+		
+		edit : function(program_id, edit_element, callback){
+			var pid = program_id,
+				edit = edit_element;
+				edit.empty().html("<div class='icon-loading-middle'></div>");
+				edit.load('/admin/programdetail',{id:pid, state:"edit"}, function(){
+					sortable($("#admin-program-detail-sortable"));
+					callback(pid);
+				});
+		},
+	},  
+	
+	editable = function(id){
+		$('span.program-name').editable('/admin/programname',{
+			submitdata: {id: id},
+			indicator : "<img src='/images/icon-loading.gif'>",
+			type	  : "text",
+			tooltip   : "Click to edit...",
+			submit  : 'Update',
+			style  : "inherit",
+			callback : function(){
+				detail.preview(id, $(".program_right"))
+			}
+		});
+
+		$('.item-name span, .item-unit span').editable('/admin/programitem',{
+			submitdata: function(){
+				return{
+					pid: id,
+					id: $(this).attr('class'),
+					item_type: $(this).parent('div').attr('class')
+				}
+			},
+			indicator : "<img src='/images/icon-loading.gif'>",
+			width	  : "100px",
+			type	  : "text",
+			tooltip   : "Click to edit...",
+			style     : "inherit",
+			callback : function(){
+				detail.preview(id, $(".program_right"))
+			}
+		});     
+	},
+	
+	sortable = function(ul_ele){
+		var start_pos,
+			end_pos;
+			
+		ul_ele.sortable({
+			revert: true,
+			start: function(event,ui){
+				start_pos = ui.item.attr('title');
+				console.log(start_pos);
+			},
+			update: function(event,ui){ 
+			   	ui.item.parent().children().each(function(index){
+					$(this).attr('title', index);
+				});                              
+				end_pos = ui.item.attr('title');
+				console.log(start_pos+" "+end_pos);
+			}
+		});
+		console.log("helloman");
 	};
 	
 	return {
-		displayDetail:displayDetail
+		displayEdit: function(id, edit_ele){
+			detail.edit(id, edit_ele, editable); 
+		},
+		displayView: detail.preview,
+		displayAll : function(program_id, edit_ele, view_ele){
+			detail.preview(program_id, view_ele);
+			detail.edit(program_id, edit_ele, editable);
+		}
 	};
 }());  
 
@@ -306,38 +378,12 @@ $(document).ready(function() {
 				)
 			}
 		});
-		
-		if ($('.program-detail').length>0){
-			$('span.program-name').editable('/admin/programname',{
-				submitdata: {id: $('span.program-name').attr('class').split(' ')[1]},
-				indicator : "<img src='/images/icon-loading.gif'>",
-				type	  : "text",
-				tooltip   : "Click to edit...",
-				submit  : 'Update',
-				style  : "inherit"
-			});
-			
-			$('.item-name span, .item-unit span').editable('/admin/programitem',{
-				submitdata: function(){
-					return{
-						pid: ($('span.program-name').attr('class').split(' ')[1]),
-						id: $(this).attr('class'),
-						item_type: $(this).parent('div').attr('class')
-					}
-				},
-				indicator : "<img src='/images/icon-loading.gif'>",
-				type	  : "text",
-				tooltip   : "Click to edit...",
-				submit  : 'Update',
-				style  : "inherit",
-				//callback: function()
-			});     
-		}     
+		 
 		
 		$("a.program-detail").bind({
 			click : function(){
 				id = $(this).attr('class').split(" ")[0];
-				RBC.admin.program.displayDetail(id,$(".program_right"))
+				RBC.admin.program.displayAll(id, $(".program_left"),  $(".program_right"));
 				return false;
 			}
 		});
@@ -529,6 +575,7 @@ $(document).ready(function() {
 							var data = $.parseJSON(response.replace(/[\[\]]/g,""));
 							if (data == null) return false;
 							if (data.u_measure == null){
+								// user measurement do not exist, load from program default measurements
                             	$("#measures_data").empty().append("Measurements:")
 
 								$.get(
@@ -539,15 +586,18 @@ $(document).ready(function() {
 										var u_measures = data.p_measure.replace(/(\r\n|\n|\r)/gm,""); 
 										var measures = u_measures.split(";");
 										var measures_data = [];
-										
-										if (/^|\s/.test(measures[measures.length-1])){
-											measures.splice(-1,1);
+									   
+										var size = measures.length;                                
+		                                for (m=0;m<size;m++){
+			 								if (measures[m]===""){
+												measures.splice(m,1);
+											}
 										}
 										
-										for (i=0; i < measures.length; i+=1){                   
+										for (i=0; i < size; i++){                   
 											measures_data[i] = {
 												name: measures[i].split(":")[0],
-												unit : measures[i].split(":")[2]
+												unit : measures[i].split(":")[1]
 											}
 										}
 										
@@ -557,15 +607,19 @@ $(document).ready(function() {
                                
 								
 							} else {
+								// user measurement exist
 								var u_measures = data.u_measure.replace(/(\r\n|\n|\r)/gm,"");
 								var measures = u_measures.split(";");
 								var measures_data = [];
-
-								if (/^|\s/.test(measures[measures.length-1])){
-									measures.splice(-1,1);
-								}
-
-								for (i=0; i < measures.length; i+=1){                   
+                                
+								var size = measures.length;                                
+                                for (m=0;m<size;m++){
+	 								if (measures[m]===""){
+										measures.splice(m,1);
+									}
+								}   
+								
+								for (i=0; i < measures.length; i++){                   
 									measures_data[i] = {
 										name: measures[i].split(":")[0],
 										before: measures[i].split(":")[1].split(",")[0].trim(),
@@ -619,7 +673,6 @@ $(document).ready(function() {
 						
 					   	before_v = "Measurements:<br/> Before:<br/> <ul>"+before_v+"</ul>";
 						after_v = "After:<br/> <ul>"+after_v+"</ul><br/>";
-						add_measure = 'Add new measurement.<br>Name: <input type="text" value="" size="10"></input> Unit:<input type="text" value="" size="5"></input>'
 						submit_btn =  $("<button>").attr('id','save_measurement')
 						.click(function(){
 							save_measures();
@@ -629,7 +682,7 @@ $(document).ready(function() {
 							icons: {primary:'ui-icon-check'}
 						});
 						 
-						$("#measures_data").empty().append(before_v).append(after_v).append(add_measure).append(submit_btn);
+						$("#measures_data").empty().append(before_v).append(after_v).append(submit_btn);
 					} 
 					
 					function save_measures(){
@@ -655,7 +708,7 @@ $(document).ready(function() {
 							measures.push(label+":"+bvalue+","+avalue+":"+unit+";");
 						}
                         
-						var measures_output = measures.join("\n");
+						var measures_output = measures.join("");
 						$.get(
 							"/admin/programusers",
 							{m_output:measures_output, pid:pid, uid:uid},

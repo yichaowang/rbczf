@@ -42,9 +42,8 @@ h2{
 }                 
 
 h3{
-	font-size:1.8em;
+	font-size:1em;
 	color: #0795b3;
-	
 }
 
 label{ 
@@ -355,10 +354,6 @@ div.progress-meter-bottom{
 /*
 	Admin - General
 */                 
-
-/*
-	Admin - Program - Editing
-*/                 
 div#admin-program-list hr{
 	width:700px;
 	height: 2px;
@@ -367,29 +362,43 @@ div#admin-program-list hr{
 	border-top:1px solid #eee;
 }                             
 
-div.program-detail li{
+/*
+	Admin - Program - Edit
+*/                 
+div.admin-program-detail-edit li{
 	display:block;
 	font-size:12px;
 	vertical-align:middle;
 	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
-	background: -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* IE10+ */
-	background: linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* W3C */   
+	background: url('/images/icon-movearrow'), -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+	background: url('/images/icon-movearrow'), -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+	background: url('/images/icon-movearrow'), -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+	background: url('/images/icon-movearrow'), linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* W3C */
+	background-repeat: no-repeat;
+	background-position: 97% 50%;
 	width:250px;
 	border:1px #ccc solid;
 	padding:1px 10px;
 	margin-top:4px;
-}
-div.program-detail li div.item-name{
+}  
+
+div.admin-program-detail-edit li:hover{
+	cursor:move;
+}   
+
+div.admin-program-detail-edit li div.item-name{
 	float:left;
-	width:160px;
+	width:140px;
 } 
 
-div.program-detail li div.item-unit{
+div.admin-program-detail-edit li div.item-unit{
 	float:left;
-	width: 85px;
-}   
+	width: 80px;
+} 
+
+div.admin-program-detail-edit li div span{
+	cursor:text;
+}          
 
 /*
 	Admin - Program - Preview

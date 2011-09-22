@@ -1,11 +1,12 @@
 <div class="admin-program-detail-preview">
-	<h2><?=$this->program_detail[0]['name']?> <br></h2>
+	<h2>Preview</h2>
+	<h3><?=$this->program_detail['name']?></h3> 
 	<table width="100%" border="0" cellspacing="5" cellpadding="5">
 		<tr>
 			<th>Measure name</th>
 			<th>Unit</th>
 		</tr>
-		<?php foreach ($this->measures as $measure) {?>
+		<?php foreach ($this->program_measures as $measure) {?>
 	    <tr>
 			<td><?=$measure['name']?></td>
 			<td><?=$measure['unit']?></td>

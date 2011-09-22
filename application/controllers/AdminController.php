@@ -154,22 +154,26 @@ class AdminController extends Zend_Controller_Action
 		 
 		$program_model = new Application_Model_Programs;
 		$id = $this->_getParam('id');
+		$state = $this->_getParam('state');
 
-		$program_detail = $program_model->find($id);
-
-		$measures = $program_detail[0]['p_measure'];
+		$program_detail = $program_model->find($id)->current();
+        
+		$measures = $program_detail['p_measure'];
 		$measures = explode(';',$measures);
 		$measures = preg_grep('#\S#', array_map('trim', $measures));			
 		for ($i=0; $i<count($measures);$i++) {
 			$item = explode(':', $measures[$i]);
 			$measure[$i]['name'] = trim($item[0]);
 			$measure[$i]['unit'] = trim($item[1]);
-		}  
+		} 
 
 		$this->view->program_detail = $program_detail;
-		$this->view->measures = $measure;    
-
-		$this->getHelper('viewRenderer')->renderScript('admin/partial/program/detail_preview.phtml');
+		$this->view->program_measures = $measure;    
+        if ($state == "preview") {
+			$this->getHelper('viewRenderer')->renderScript('admin/partial/program/detail_preview.phtml');
+		} else if ($state == "edit") {
+			$this->getHelper('viewRenderer')->renderScript('admin/partial/program/detail_editing.phtml');
+		}
 	}
 	
 	public function programnameAction(){
@@ -208,10 +212,12 @@ class AdminController extends Zend_Controller_Action
 		$this->getHelper('viewRenderer')->setNoRender(true);
 		 
 		$pid = $this->_getParam('pid');
-		$id  = $this->_getParam('id');
+		$id  = $this->_getParam('id'); // the position of the item in p_measure
 		$type = ($this->_getParam('item_type')=='item-unit') ? 1 : 0;
+		$type_user = ($this->_getParam('item_type')=='item-unit') ? 2 : 0;
 		$value = stripslashes($this->_getParam('value'));       
 		
+		// update programs p_measures
 		$program_model = new Application_Model_Programs;
 		$program_detail = $program_model->find($pid)->current();
 		$detail = $program_detail['p_measure'];  
@@ -229,13 +235,50 @@ class AdminController extends Zend_Controller_Action
 		}                              
 		$new_items = implode(";",$new_items); 
 		
-		//$update_status = $program_model->update(
-		//	array('p_measure' => $new_items),
-		//	array('id = ?' => $pid)
-		//);
-	  
+		$update_status = $program_model->update(
+			array('p_measure' => $new_items),
+			array('id = ?' => $pid)
+		);
+	    
+		// update users_program u_measure
+		$user_program_model = new Application_Model_UsersPrograms;
+		$users_program_rowset = $user_program_model->fetchAll('program_id = '. $pid);
+		foreach($users_program_rowset as $row){ 
+			if ($row->u_measure == ""){
+				continue;
+			}
+			$umeasure_output = array();  
+			$umeasure_item_row = explode(";", $row->u_measure);
+		   	$umeasure_item_row = preg_grep('#\S#', array_map('trim', $umeasure_item_row));
+			$count = count($umeasure_item_row);
+            for($j=0;$j<$count;$j++){
+	        	$umeasure_output[$j] = explode(":",$umeasure_item_row[$j]);
+			}
+			$umeasure_output[$id][$type_user] = $value;  // mapping update
+			$output = array();
+			foreach($umeasure_output as $umeasure){
+				$output[]=implode(":",$umeasure);
+			}
+			$output = implode(";", $output);
+			$row->u_measure = $output;
+			$row->save();
+		}
+		
 		echo $value;
 			
+	}     
+	
+	public function programsortAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+		
+		
 	}
 	
 	public function programactiveAction(){

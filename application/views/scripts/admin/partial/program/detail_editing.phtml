@@ -1,0 +1,18 @@
+<div class="admin-program-detail-edit">
+	<h2>Program Detail</h2>
+	<h3><span class="program-name <?=$this->program_detail['id']?>"><?=$this->program_detail['name']?></span></h3>
+	<ul id="admin-program-detail-sortable">
+		<?php $count = count($this->program_measures);
+		 for($i=0;$i<$count;$i++) {?>
+		<li title="<?=$i?>">
+			<div class="item-name">
+				<span class="<?=$i?>"><?=$this->program_measures[$i]['name']?></span>
+			</div>
+			<div class="item-unit">
+				<span class="<?=$i?>"><?=$this->program_measures[$i]['unit']?></span>
+			</div>
+			<div class="clear"></div>
+		</li>
+		<?php }?>
+	</ul>   
+</div>

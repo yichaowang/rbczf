@@ -23,71 +23,16 @@
 			<br>
 			<a class="ui-button-apperence" href="/admin/program#add-program">Add New Program</a>
 			<br><br>
-   		</div>
-		
-		<?php  if(isset($this->program_detail)){?>
-		<div class="grid_4 program-detail">
-				<h2>Program Detail</h2>
-				<div>
-					<span class="program-name <?=$this->program_detail[0]['id']?>"><?=$this->program_detail[0]['name']?></span>
-				</div>
-				<ul>
-					<li>
-						<div class="item-name">
-							<span class="0">Heart</span>
-						</div>
-						<div class="item-unit">
-							<span class="0">bpm</span>
-						</div>
-						<div class="clear"></div>
-					</li>
-					
-				</ul>
-		</div>
-		<?php }?>
-		
+   		</div>           
+
 		<div class="grid_4 program_left">
 			
 		</div>
 		
 		<div class="grid_4 program_right">
-			<h2><?=$this->program_detail[0]['name']?> <br></h2>
-			<table width="100%">
-				<tr>
-					<th>Name</th>
-					<th>Unit</th>
-				</tr> 
-				<?php foreach ($this->measures as $measure){?>
-					<tr> 
-						<td><?=$measure[0]?></td>
-						<td><?=$measure[1]?></td>
-					</tr>
-				<?php }?>
-			</table>
-			<br><br>
+	   
 		</div>
 	   
-		
-		<?php  if($this->measures=="sdfgsdfg"){?>
-		<div class="grid_4">
-			<h2><?=$this->program_detail[0]['name']?> <br></h2>
-			<table width="100%">
-				<tr>
-					<th>Name</th>
-					<th>Sample Value</th>
-					<th>Unit</th>
-				</tr> 
-				<?php foreach ($this->measures as $measure){?>
-					<tr> 
-						<td><?=$measure[0]?></td>
-						<td><?=$measure[1]?></td>
-						<td><?=$measure[2]?></td>
-					</tr>
-				<?php }?>
-			</table>
-			<br><br>  
-		</div>
-		<?php } ?> 
 				
 		<?php  if(isset($this->paypal)){?>
 			<div class="grid_5">
