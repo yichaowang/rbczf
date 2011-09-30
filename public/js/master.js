@@ -17,24 +17,64 @@ RBC.utility = (function(){
 }());
 
 RBC.admin.program =(function (){
-	var detail = {
+	var detail_panel = {
 		preview : function(program_id, display_element){
 			var pid = program_id,
-				view = display_element;
+				view = display_element || $(".program_right");
 				view.empty().html("<div class='icon-loading-middle'></div>");
 				view.load('/admin/programdetail',{id:pid, state:"preview"});
 		},
 		
-		edit : function(program_id, edit_element, callback){
+		edit : function(program_id, edit_element){
 			var pid = program_id,
-				edit = edit_element;
+				edit = edit_element || $(".program_left");;
 				edit.empty().html("<div class='icon-loading-middle'></div>");
+				$('form#form-add-measurement').remove();
 				edit.load('/admin/programdetail',{id:pid, state:"edit"}, function(){
-					sortable($("#admin-program-detail-sortable"));
-					callback(pid);
+					addItem($('a.add-item'), pid)
+					sortable($("#admin-program-detail-sortable"), pid);
+					remove($("#admin-program-detail-sortable"),pid);
+					editable(pid);
 				});
 		},
 	},  
+	
+	addItem = function(add_btn, pid, add_form){ 
+		add_btn.button({ icons:{primary:'ui-icon-plus'}});
+		var add_form = add_form || $('form#form-add-measurement') ;
+		add_btn.bind({
+			click: function(){
+				console.log(add_form);
+				add_form.dialog({
+					height: 200,
+					width: 350,
+					buttons: {
+						Add : function(){
+							var mname = $('#mname').val(),
+								munit = $('#munit').val();
+							$.post("/admin/programaddmeasurement", {
+								pid:pid,
+								mname:mname,
+								munit:munit
+							},function(response){
+								console.log(response);
+								detail_panel.preview(pid);
+								detail_panel.edit(pid);
+							})
+							$(this).dialog("close");
+						},
+						Cancel : function(){
+							$(this).dialog("close");
+						}
+					},
+					close: function(){
+						$('#mname,#munit').val("");
+					}
+				})
+				return false;
+			}
+		})
+	},
 	
 	editable = function(id){
 		$('span.program-name').editable('/admin/programname',{
@@ -45,7 +85,7 @@ RBC.admin.program =(function (){
 			submit  : 'Update',
 			style  : "inherit",
 			callback : function(){
-				detail.preview(id, $(".program_right"))
+				detail_panel.preview(id, $(".program_right"))
 			}
 		});
 
@@ -53,7 +93,7 @@ RBC.admin.program =(function (){
 			submitdata: function(){
 				return{
 					pid: id,
-					id: $(this).attr('class'),
+					id: $(this).parents('li').attr('title'),
 					item_type: $(this).parent('div').attr('class')
 				}
 			},
@@ -63,12 +103,12 @@ RBC.admin.program =(function (){
 			tooltip   : "Click to edit...",
 			style     : "inherit",
 			callback : function(){
-				detail.preview(id, $(".program_right"))
+				detail_panel.preview(id, $(".program_right"))
 			}
 		});     
 	},
 	
-	sortable = function(ul_ele){
+	sortable = function(ul_ele, pid){
 		var start_pos,
 			end_pos;
 			
@@ -76,27 +116,77 @@ RBC.admin.program =(function (){
 			revert: true,
 			start: function(event,ui){
 				start_pos = ui.item.attr('title');
-				console.log(start_pos);
 			},
 			update: function(event,ui){ 
 			   	ui.item.parent().children().each(function(index){
 					$(this).attr('title', index);
 				});                              
 				end_pos = ui.item.attr('title');
-				console.log(start_pos+" "+end_pos);
+				$.post('/admin/programsort',
+					{pid: pid, start_pos:start_pos, end_pos:end_pos},
+					function(){
+						console.log(pid);
+						detail_panel.preview(pid);
+					}
+				)
 			}
 		});
-		console.log("helloman");
+	},
+	
+	remove = function(ul_ele, program_id){
+		ul_ele.children('li').mouseenter(function(){
+			var pid = program_id,
+				id = $(this).attr('title'),
+				icon = $('<span class="icon-delete"></span>'),
+				width = 266;
+			icon.bind({
+				click:function(){
+					if(icon.parents('ul').children().length==1){
+						$('<p class="dialog">A program must have at least one measurment. Please delete the program instead if you do not want the progarm anymore.</p>').dialog({
+							show: "highlight",
+							hide: "fade",
+							height:150
+						});
+						return;
+					}
+					$.post("/admin/programdeleteitem",{
+						id:id,
+						pid:pid
+					},function(response){
+						var ul_ele = icon.parents('ul');
+						icon.parents('li').remove();
+						ul_ele.children().each(function(index){
+							$(this).attr('title', index);
+						});
+						detail_panel.preview(pid);
+					});
+				}
+			});
+			$(this).animate({
+				'width': width,
+				'background-position': '90% 50%'
+			},100);	
+			$(this).children('.clear').before(icon);
+		}).mouseleave(function(){
+			var width = 250;
+			$('.icon-delete').remove();
+			$(this).animate({
+				'width': width,
+				'background-position': '97% 50%'
+				},100);
+		   	 
+		});                  
+		   
 	};
 	
 	return {
 		displayEdit: function(id, edit_ele){
-			detail.edit(id, edit_ele, editable); 
+			detail_panel.edit(id, edit_ele, editable); 
 		},
-		displayView: detail.preview,
+		displayView: detail_panel.preview,
 		displayAll : function(program_id, edit_ele, view_ele){
-			detail.preview(program_id, view_ele);
-			detail.edit(program_id, edit_ele, editable);
+			detail_panel.preview(program_id, view_ele);
+			detail_panel.edit(program_id, edit_ele);
 		}
 	};
 }());  
@@ -534,8 +624,9 @@ $(document).ready(function() {
 		function rmUserFunc(td){
 			$(td).bind({
 				mouseenter: function(){
-					var del = $("<img class='icon-cross' style='float:right' height='20px' width='20px' src='/images/icon-cross.png'>");
+					var del = $("<img class='icon-cross' style='padding-top:5px;float:right; display:none;' height='16px' width='16px' src='/images/icon-delete.png'>");
 					$(td).append(del);
+					del.fadeIn(1000);
 					del.click(function(){
 						var rid = del.closest("tr").attr('class').split(' ')[0]; 
 						var pid = $('#program-tb tr.selected').attr('class').split(' ')[0];
@@ -705,10 +796,10 @@ $(document).ready(function() {
 							var unit = data[1][j].find('span').text().trim();
 							 
 
-							measures.push(label+":"+bvalue+","+avalue+":"+unit+";");
+							measures.push(label+":"+bvalue+","+avalue+":"+unit);
 						}
                         
-						var measures_output = measures.join("");
+						var measures_output = measures.join(";");
 						$.get(
 							"/admin/programusers",
 							{m_output:measures_output, pid:pid, uid:uid},

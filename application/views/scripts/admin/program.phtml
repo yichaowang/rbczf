@@ -11,7 +11,6 @@
 						<div style="float:left; width:300px"><?=$program["name"]?></div> 
 						<input class="program-switch" name="checkbox.1.2" type="checkbox" id="check" <?php if ($program["active"]==1){ echo 'checked=""'; } ?> style="position: absolute; z-index: -1; visibility: hidden; ">  
 						<input name="program_id" type="hidden" value=<?=$program["id"]?>>	
-						<a class="ui-button-apperence" href="/admin/program/update/<?=$program["id"]?>">Edit</a> &nbsp;
 						<a class="<?=$program["id"]?> program-detail ui-button-apperence" href="#">Detail</a> &nbsp; 
 						<a class="ui-button-apperence" href="/admin/program/delete/<?=$program["id"]?>" onclick="return confirm('All users measurements of this program will be lost. Continue?')">Delete</a> &nbsp; 
 						<a class="ui-button-apperence" href="/admin/program/paypal/<?=$program["id"]?>">Paypal</a> 

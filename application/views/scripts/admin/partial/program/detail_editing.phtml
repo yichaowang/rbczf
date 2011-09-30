@@ -6,13 +6,22 @@
 		 for($i=0;$i<$count;$i++) {?>
 		<li title="<?=$i?>">
 			<div class="item-name">
-				<span class="<?=$i?>"><?=$this->program_measures[$i]['name']?></span>
+				<span><?=$this->program_measures[$i]['name']?></span>
 			</div>
 			<div class="item-unit">
-				<span class="<?=$i?>"><?=$this->program_measures[$i]['unit']?></span>
+				<span><?=$this->program_measures[$i]['unit']?></span>
 			</div>
 			<div class="clear"></div>
 		</li>
 		<?php }?>
-	</ul>   
+	</ul>
+	<a class="add-item" href="#">Add</a> 
+	
+	<form id="form-add-measurement" class="<?=$this->program_detail['id']?>"> 
+		<p>Add new measurement</p>
+		<label>Name:</label>
+		<input id="mname" type="text" size="10"/>
+		<label>Unit:</label>
+		<input id="munit" type="text" size="10"/>
+	</form>  
 </div>

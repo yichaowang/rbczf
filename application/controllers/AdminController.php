@@ -277,8 +277,140 @@ class AdminController extends Zend_Controller_Action
 
 		$this->_helper->layout->disableLayout(); 
 		$this->getHelper('viewRenderer')->setNoRender(true);
+
+		$pid = $this->_getParam('pid');
+		$start_pos  = $this->_getParam('start_pos'); 
+	  	$end_pos  = $this->_getParam('end_pos');
+	    
+		if ($start_pos == $end_pos) {
+			exit;
+		}                         
 		
+	  	// update programs p_measures
+	 	$program_model = new Application_Model_Programs;
+		$program_row = $program_model->find($pid)->current();
+		$items = explode(";", $program_row->p_measure);
+		$items = preg_grep('#\S#', array_map('trim', $items));
+		$item_temp = $items[$start_pos];
+		unset($items[$start_pos]);
+   		array_splice($items,$end_pos,0,$item_temp);   
+		$program_row->p_measure = implode(";", $items);
+		$program_row->save();
 		
+		// update users_program u_measure
+		$user_program_model = new Application_Model_UsersPrograms;
+		$users_program_rowset = $user_program_model->fetchAll('program_id = '. $pid);
+		foreach($users_program_rowset as $row){ 
+			if ($row->u_measure == ""){
+				continue;
+			}
+			$umeasure_item_rowset = explode(";", $row->u_measure);
+		   	$umeasure_item_rowset = preg_grep('#\S#', array_map('trim', $umeasure_item_rowset));
+			$umeasure_temp = $umeasure_item_rowset[$start_pos];
+			unset($umeasure_item_rowset[$start_pos]);
+			array_splice($umeasure_item_rowset,$end_pos,0,$umeasure_temp);   
+			$row->u_measure = implode(";",$umeasure_item_rowset);
+			$row->save();   
+		}
+	} 
+	
+	public function programdeleteitemAction(){
+	   	if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+		
+		$pid = $this->_getParam('pid');
+		$id = $this->_getParam('id'); 
+		 
+		// delete programs p_measures
+	 	$program_model = new Application_Model_Programs;
+		$program_row = $program_model->find($pid)->current();
+		$items = explode(";", $program_row->p_measure);
+		$items = preg_grep('#\S#', array_map('trim', $items));
+		unset($items[$id]);
+		$program_row->p_measure = implode(";", $items);
+		$program_row->save();      
+		
+		// delete users_program u_measure
+		$user_program_model = new Application_Model_UsersPrograms;
+		$users_program_rowset = $user_program_model->fetchAll('program_id = '. $pid);
+		foreach($users_program_rowset as $row){ 
+			if ($row->u_measure == ""){
+				continue;
+			}
+			$umeasure_item_rowset = explode(";", $row->u_measure);
+		   	$umeasure_item_rowset = preg_grep('#\S#', array_map('trim', $umeasure_item_rowset));
+			unset($umeasure_item_rowset[$id]);
+			$row->u_measure = implode(";",$umeasure_item_rowset);
+			$row->save();   
+		}
+		
+	}                                                       
+	
+	public function programaddmeasurementAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+
+		$pid = $this->_getParam("pid");
+		$mname = $this->_getParam("mname");
+		$munit = $this->_getParam("munit"); 
+        
+		// add programs p_measures
+		$program_model = new Application_Model_Programs;
+		$program_row = $program_model->find($pid)->current();
+		$items = $program_row->p_measure;
+		$items = $items.";".$mname.":".$munit;
+		$program_row->p_measure = $items;
+		$program_row->save();
+		
+		// add users_program u_measure
+		$user_program_model = new Application_Model_UsersPrograms;
+		$users_program_rowset = $user_program_model->fetchAll('program_id = '. $pid);
+		foreach($users_program_rowset as $row){ 
+			if ($row->u_measure == ""){
+				continue;
+			}
+			$umeasure_item = $row->u_measure;
+		   	$umeasure_item = $umeasure_item.";".$mname.":N/A,N/A:".$munit;
+			$row->u_measure = $umeasure_item;
+			$row->save();   
+		}
+	}
+	
+	public function programtestarrayAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+
+
+		$pid = $this->_getParam('pid');
+		$start_pos  = $this->_getParam('start_pos'); 
+		$end_pos  = $this->_getParam('end_pos'); 
+		
+		$start_pos =1;
+		$end_pos = 4;
+		$test_array = array('a', 'b', 'c', 'd', 'e');
+		$insert_array = $test_array[$start_pos];
+		unset($test_array[$start_pos]);
+		array_splice($test_array, $end_pos,0, $insert_array);   
+		
+		print_r($test_array);
 	}
 	
 	public function programactiveAction(){

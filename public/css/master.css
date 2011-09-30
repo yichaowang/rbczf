@@ -378,7 +378,7 @@ div.admin-program-detail-edit li{
 	background-position: 97% 50%;
 	width:250px;
 	border:1px #ccc solid;
-	padding:1px 10px;
+	padding:1px 5px;
 	margin-top:4px;
 }  
 
@@ -398,7 +398,16 @@ div.admin-program-detail-edit li div.item-unit{
 
 div.admin-program-detail-edit li div span{
 	cursor:text;
-}          
+}  
+
+div.admin-program-detail-edit a.add-item{
+	margin-top:5px;
+	padding-top:-5px !important;
+}  
+
+form#form-add-measurement{
+	display:none;
+}     
 
 /*
 	Admin - Program - Preview
@@ -560,11 +569,15 @@ div.admin-testimonials-wrapper p{
 	background-repeat: repeat;
 }
 
-.icon-cross:hover{
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	border:1px dashed #888;
+.icon-delete{
+	float:right;
+	height:16px;
+	width:16px;
+	background: url("/images/icon-delete.png");
+}
+
+.icon-delete:hover{
+	cursor: pointer;
 } 
 
 .icon-exit{
@@ -579,6 +592,10 @@ div.admin-testimonials-wrapper p{
 	background:url("/images/icon-loading.gif") no-repeat center center;
 	height:200px;
 }  
+
+p.dialog{
+	font-size:12px;
+}
 
 #fb-logo, #twt-logo{
  	position:absolute;
@@ -601,6 +618,7 @@ div.admin-testimonials-wrapper p{
 	width:38px;
 	background:url('/images/icon-tw.png') no-repeat;
 }
+   
 
 /*
 	Editible
