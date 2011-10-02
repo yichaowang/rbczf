@@ -24,7 +24,7 @@ body p{
 }
 
 h1,h2,h3,h4{
-	font-family: "Oswald", sans-serif;
+	font-family: "Droid Sans", sans-serif;
 } 
 
 h1{  
@@ -36,12 +36,12 @@ h1{
 h2{
 	font-size:1.8em;
 	line-height:1.8em;
-	color:#0795B3;
+	color:#586b79;
 }                 
 
 h3{
 	font-size:1em;
-	color: #0795b3;
+	color: #586b79;
 }
 
 label{ 
@@ -104,7 +104,7 @@ div#banner{
 }
 
 div#main-wrapper {
-	padding:16px 0px 0px 0px;
+	padding:16px 0px 16px 0px;
 	background-image: -webkit-gradient(
 		linear,
 		left bottom,
@@ -127,7 +127,8 @@ div#footer{
 	font: 20px "Oswald", sans-serif;
 	color:#acacac;
 	text-align:right;
-	background:#34363e;    
+	background:#34363e;
+	    
 	padding:10px 30px; 
 	position:relative;
 	margin-bottom:70px;
@@ -155,7 +156,7 @@ div#footer img#yoga{
 
 div#index-main{
 	position:relative;
-	height:500px;
+	height:600px;
 	overflow:hidden;
 }
 
@@ -167,18 +168,47 @@ div#index-swapbox{
 
 div#index-main section{
 	padding:20px 400px 0px 30px;
-	height:480px;
+	height:580px;
 }
 
 div#index-main section:not(.welcome){
 	background:url('/images/bg-pattern2.png');
+	
+}  
+
+div#index-main section:not(.welcome) h1{
+	font-family: "Droid Sans", sans-serif;
+	font-weight: 700;
+	text-shadow: 0 1px 0 white; 
+	letter-spacing:-1px;
+	padding-bottom:15px;
 }
+
+div#index-main section:not(.welcome) label{
+	float:none;                            
+	font-size:20px;
+	font-family: "Droid Sans", sans-serif;
+	font-weight: 700;
+	text-shadow: 0 1px 0 white; 
+	color: #586b79;
+}                                   
+
+div#index-main section:not(.welcome) > div{
+	padding: 0 0 15px 2px;
+} 
+
+div#index-main section > div.paypal-btn{
+	padding:10px 0 15px 5px;
+}
+
+
 
 section.welcome{
 	background:url('/images/bg-sand.png') repeat;
 }          
 
-section.welcome h1{
+section.welcome h1{ 
+	font-family:"Oswald",  sans-serif;
 	font-size:28px;
 }
 
@@ -190,7 +220,11 @@ section.welcome h1 em{
 	font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
 	font-size:34px;
 	font-weight:300;
-}    
+} 
+
+section.welcome #google-cal{
+	padding-top:30px;
+}   
 
      
 nav.swapbox{
@@ -204,7 +238,7 @@ nav.swapbox{
 	min-height:430px;
 	margin-top:-25px;
 	background: url('/images/bg-index-side-program.png') no-repeat;
-	padding:73px 0px 0px 0px;
+	padding:83px 0px 0px 0px;
 } 
 
 nav.swapbox ul li{
@@ -221,6 +255,10 @@ nav.swapbox ul li a{
 
 nav.swapbox ul li a.active{
 	background: url('/images/bg-index-caret.png') no-repeat 0% 50%;
+}
+
+nav.swapbox ul li.back{
+	display:none;
 } 
 
 
@@ -450,7 +488,11 @@ div.progress-meter-bottom{
  
 /*
 	Admin - General
-*/                 
+*/   
+nav#admin a{
+	font-size:12px;
+}
+              
 div#admin-program-list hr{
 	width:700px;
 	height: 2px;
@@ -461,8 +503,25 @@ div#admin-program-list hr{
 
 /*
 	Admin - Program - Edit
-*/                 
-div.admin-program-detail-edit li{
+*/       
+div#admin-program-content{
+	
+}   
+
+div#admin-program-content section label{
+	float:none;
+}                                
+
+div#admin-program-content section > div{
+	color:#586b79;
+	margin-bottom:10px;
+}
+
+ul#admin-program-detail-sortable {
+	margin-bottom:4px;
+}
+          
+ul#admin-program-detail-sortable > li{
 	display:block;
 	font-size:12px;
 	vertical-align:middle;
@@ -479,31 +538,29 @@ div.admin-program-detail-edit li{
 	margin-top:4px;
 }  
 
-div.admin-program-detail-edit li:hover{
+ul#admin-program-detail-sortable li:hover{
 	cursor:move;
 }   
 
-div.admin-program-detail-edit li div.item-name{
+ul#admin-program-detail-sortable li div.item-name{
 	float:left;
 	width:140px;
 } 
 
-div.admin-program-detail-edit li div.item-unit{
+ul#admin-program-detail-sortable li div.item-unit{
 	float:left;
 	width: 80px;
 } 
 
-div.admin-program-detail-edit li div span{
+ul#admin-program-detail-sortable li div span{
 	cursor:text;
 }  
 
-div.admin-program-detail-edit a.add-item{
-	margin-top:5px;
-	padding-top:-5px !important;
+ul#admin-program-detail-sortable a.add-item{
 }  
 
 form#form-add-measurement{
-	display:none;
+	display:none;                   
 }     
 
 /*
@@ -522,6 +579,12 @@ div.admin-program-detail-preview td{
 	border-bottom:1px solid #eee;
 }
 
+/*
+	Admin - Program - Paypal
+*/                          
+form#form-admin-paypal{
+	display:none;
+}
          
 
 
@@ -686,8 +749,8 @@ div.admin-testimonials-wrapper p{
 }
 
 .icon-loading-middle{
-	background:url("/images/icon-loading.gif") no-repeat center center;
-	height:200px;
+	background:url("/images/icon-loading.gif") no-repeat 50% 50%;  
+	height:100px;
 }  
 
 p.dialog{

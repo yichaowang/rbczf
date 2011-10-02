@@ -87,60 +87,33 @@ class AdminController extends Zend_Controller_Action
 		
 		$program = new Application_Model_Programs;
 		$this->view->programs = $program->fetchAll();
-		 
+	}       
+	
+	public function programactiveAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+		
 		$state = $this->_getParam('state');
-		$id = $this->_getParam('id'); 
-
-		if ($state == "detail"){
-			//$row = $program->find($id); 				
-			//$this->view->program_form = new Application_Form_Program($state, $row);
-
-			$program_detail = $program->find($id);
-			 
-			$measures = $program_detail[0]['p_measure'];
-			$measures = explode(';',$measures);
-			$measures = preg_grep('#\S#', array_map('trim', $measures));			
-			for ($i=0; $i<count($measures);$i++) {
-				$item = explode(':', $measures[$i]);
-				$measure[$i][] = trim($item[0]);
-				$measure[$i][] = trim($item[1]);
-				//$measure[$i][] = trim($item[2]);
-			}  
-			
-		    $this->view->program_detail = $program_detail;
-			$this->view->measures = $measure;
-			 
-			
-		} else if ($state=="delete"){
-			$where = $program->getAdapter()->quoteInto('id = ?', $id);
-			$program->delete($where);
-			$this->_redirect('/admin/program');
-		} else if ($state=="paypal"){  
-			$this->view->paypal = "paypal";
-			$this->view->paypal_pid = $id; 
-			
-			$program_detail = $program->select()
-					   ->where('id= ?', $id)
-					   ->query()->fetchAll();
-
-			if ($program_detail[0]["paypal"]!=""){
-				$this->view->paypal_code = $program_detail[0]["paypal"];
-			}
-			
-		} else { 
-			$this->view->program_form = new Application_Form_Program();
+		$pid = $this->_getParam('pid');
+		$p_status = $this->_getParam('p_status');   
+		
+		$program_model = new Application_Model_Programs;
+		
+		if ($state == "update" && $pid!=null && $p_status!=null){
+			$update_status = $program_model->update(
+				array('active' => $p_status), 
+				array('id = ?' => $pid)
+			);
+			echo $update_status;
 		}
-		
-		
-		
-		if ($this->getRequest()->isPost() &&
-			$this->view->program_form->isValid($this->getRequest()->getParams()))
-		{
-			echo $this->view->program_form->persistData();
-			//$this->_redirect('/admin/program/update/'.$id);
-		}
-
 	}
+	
 	
 	public function programdetailAction(){
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
@@ -174,9 +147,36 @@ class AdminController extends Zend_Controller_Action
 		} else if ($state == "edit") {
 			$this->getHelper('viewRenderer')->renderScript('admin/partial/program/detail_editing.phtml');
 		}
+	} 
+	
+	public function programpaypalAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}                                      
+		
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+
+		$id = $this->_getParam('id');
+		$req = $this->_getParam('req');
+		$paypal_code = $this->_getParam('paypal');
+		$program_model = new Application_Model_Programs;
+		$program_row = $program_model->find($id)->current();
+		
+		if ($req=='preview'){
+			$this->view->program = $program_row;  
+			$this->_helper->layout->disableLayout();
+			$this->getHelper('viewRenderer')->renderScript('admin/partial/program/paypal.phtml');
+		} else if ($req=='update'){
+			$this->_helper->layout->disableLayout(); 
+			$this->getHelper('viewRenderer')->setNoRender(true);
+			$program_row->paypal = $paypal_code;
+			$program_row->save();
+			echo 1;
+		} 
 	}
 	
-	public function programnameAction(){
+	public function programcontentAction(){
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
 			$this->_redirect('/admin/login');
 		}                                      
@@ -187,18 +187,19 @@ class AdminController extends Zend_Controller_Action
 		$this->_helper->layout->disableLayout(); 
 		$this->getHelper('viewRenderer')->setNoRender(true);
 		
-		$id = $this->_getParam('id');
+		$id = $this->_getParam('id'); 
+		$item = $this->_getParam('item');
 		$value = stripslashes($this->_getParam('value'));
 
 		$program_model = new Application_Model_Programs;
 
 		$update_status = $program_model->update(
-			array('name' => $value),
+			array($item => $value),
 			array('id = ?' => $id)
 		);
 		  
 		echo $value;   
-	}   
+	}  
 	
 	public function programitemAction(){
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
@@ -312,7 +313,7 @@ class AdminController extends Zend_Controller_Action
 			$row->u_measure = implode(";",$umeasure_item_rowset);
 			$row->save();   
 		}
-	} 
+	}                                                       
 	
 	public function programdeleteitemAction(){
 	   	if (!Zend_Auth::getInstance()->hasIdentity()) {
@@ -350,7 +351,8 @@ class AdminController extends Zend_Controller_Action
 			$row->save();   
 		}
 		
-	}                                                       
+	}   
+	
 	
 	public function programaddmeasurementAction(){
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
@@ -412,37 +414,7 @@ class AdminController extends Zend_Controller_Action
 		
 		print_r($test_array);
 	}
-	
-	public function programactiveAction(){
-		if (!Zend_Auth::getInstance()->hasIdentity()) {
-			$this->_redirect('/admin/login');
-		}
-		$sess = new Zend_Session_Namespace('renewal.auth');
-		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
 
-		$this->_helper->layout->disableLayout(); 
-		$this->getHelper('viewRenderer')->setNoRender(true);
-		
-		$state = $this->_getParam('state');
-		$pid = $this->_getParam('pid');
-		$p_status = $this->_getParam('p_status');   
-		
-		$program_model = new Application_Model_Programs;
-		
-		if ($state == "update" && $pid!=null && $p_status!=null){
-			$update_status = $program_model->update(
-			array(
-				'active'      => $p_status,
-				), 
-			array(
-				'id = ?' => $pid
-				)
-			);
-			
-			echo $update_status;
-		}
-	}
-	
 	public function paypalbtnAction(){
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
 			$this->_redirect('/admin/login');
@@ -469,7 +441,6 @@ class AdminController extends Zend_Controller_Action
 	    
 		header('Content-Type: application/json'); 
 		echo $update_status;
-		
 	}
 	
 	public function enrollmentAction()

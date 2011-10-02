@@ -1,16 +1,32 @@
 <div class="admin-program-detail-preview">
 	<h2>Preview</h2>
-	<h3><?=$this->program_detail['name']?></h3> 
-	<table width="100%" border="0" cellspacing="5" cellpadding="5">
-		<tr>
-			<th>Measure name</th>
-			<th>Unit</th>
-		</tr>
-		<?php foreach ($this->program_measures as $measure) {?>
-	    <tr>
-			<td><?=$measure['name']?></td>
-			<td><?=$measure['unit']?></td>
-		</tr>
-		<?php }?>
-	</table>
+		<div id="admin-program-content">
+		<section>
+			<label>Name:</label>
+			<div><?=$this->program_detail['name']?></div>
+		</section> 
+		<section>
+			<label>Description:</label>
+			<div><?=$this->program_detail['description']?></div>
+		</section>
+		<section>
+			<label>Price:</label>
+			<div><?=$this->program_detail['price']?></div>
+		</section>
+        <section>
+			<label>Measurements:</label>
+			<table width="100%" border="0" cellspacing="5" cellpadding="5">
+				<tr>
+					<th>Measure name</th>
+					<th>Unit</th>
+				</tr>
+				<?php foreach ($this->program_measures as $measure) {?>
+			    <tr>
+					<td><?=$measure['name']?></td>
+					<td><?=$measure['unit']?></td>
+				</tr>
+				<?php }?>
+			</table>
+		</section>    
+	</div>
 </div>

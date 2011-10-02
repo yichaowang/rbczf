@@ -13,14 +13,33 @@
 				<h1><b>STRONG</b> IS THE NEW <em>SKINNY</em></h1>
 				<p>People of ALL levels , shapes, and sizes have gained great results with Renewal Body Bootcamp. Now you can too! Tired of the same routine or need a jump-start to your fitness? Then RENEW yourself today! Whether you are a beginner or fitness guru, come try Renewal Body Bootcamp's whole new approach to fitness. You work, you sweat, and best of all, you burn calories like crazy while having fun! We challenge your body to it?s limit through fun plyometric moves and bootcamp drills that work your entire body. Whether you want to lose weight, work on flexibility, agility, or speed training? This is the program for you!
 				</p>
+				<iframe id='google-cal' src="https://www.google.com/calendar/embed?mode=AGENDA&amp;height=400&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=sah1buirj30lnjc95hh6lnkk9g%40group.calendar.google.com&amp;color=%23182C57&amp;ctz=America%2FNew_York" style=" border-width:0 " width="500" height="200" frameborder="0" scrolling="no"></iframe>
+				
 			</section>
 			<?php
 			 	$m = 0;
 				foreach ($this->programs as $program){
-
-				if ($program->active == 1){
+				if ($program->active == 1){   
 			?>
-	        <section class="<?=$m?>"><h1>Hello! I'm <?=$program->name;?> !!</h1></section>
+			<section class="<?=$m?>">
+				<h1><?=$program->name;?></h1>
+				<label>Classes / Series Description:</label>
+				<div>
+					<?=$program->description?>
+				</div>
+				<label>Prices:</label>
+				<div>
+					<?=$program->price?>
+				</div>
+				<label>Pictures:</label>
+				<div>
+					Coming Soon
+				</div> 
+				<label>Sign Up Online with Paypal:</label>
+				<div class="paypal-btn">
+					<?=$program->paypal?>
+				</div>
+			</section>
 			<?php 
 				$m++;
 			}}; ?>

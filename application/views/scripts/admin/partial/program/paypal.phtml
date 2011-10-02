@@ -1,0 +1,9 @@
+<form id="form-admin-paypal" title="<?=$this->program['id']?>">
+	<h2><?=$this->program->name?></h2>
+	<lable for="paypal_code">Paypal button code:</lable>
+	<textarea name="paypal_code" cols="60" rows="15"><?php if(isset($this->program->paypal)){echo $this->program->paypal;}?></textarea>
+	<h2>Preview</h2>
+	<div class='paypal-preview'>
+		<?php if(isset($this->program->paypal)){echo $this->program->paypal;}?> 
+	</div>
+</form>

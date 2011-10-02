@@ -2,6 +2,7 @@ var RBC = RBC || {};
 
 RBC = {
 	admin:{
+		nav:{},
 		program:{}
 	},
 	home:{
@@ -47,10 +48,10 @@ RBC.admin.program =(function (){
 		var add_form = add_form || $('form#form-add-measurement') ;
 		add_btn.bind({
 			click: function(){
-				console.log(add_form);
 				add_form.dialog({
 					height: 200,
-					width: 350,
+					width: 350, 
+					modal:true,
 					buttons: {
 						Add : function(){
 							var mname = $('#mname').val(),
@@ -80,10 +81,22 @@ RBC.admin.program =(function (){
 	},
 	
 	editable = function(id){
-		$('span.program-name').editable('/admin/programname',{
-			submitdata: {id: id},
+		$('div.program-name').editable('/admin/programcontent',{
+			submitdata: {id: id, item: 'name'},
 			indicator : "<img src='/images/icon-loading.gif'>",
 			type	  : "text",
+			tooltip   : "Click to edit...",
+			submit  : 'Update',
+			style  : "inherit",
+			callback : function(){
+				detail_panel.preview(id, $(".program_right"))
+			}
+		});
+		
+		$('div.program-description').editable('/admin/programcontent',{
+			submitdata: {id: id, item: 'description'},
+			indicator : "<img src='/images/icon-loading.gif'>",
+			type	  : "textarea",
 			tooltip   : "Click to edit...",
 			submit  : 'Update',
 			style  : "inherit",
@@ -128,7 +141,6 @@ RBC.admin.program =(function (){
 				$.post('/admin/programsort',
 					{pid: pid, start_pos:start_pos, end_pos:end_pos},
 					function(){
-						console.log(pid);
 						detail_panel.preview(pid);
 					}
 				)
@@ -177,9 +189,45 @@ RBC.admin.program =(function (){
 				'width': width,
 				'background-position': '97% 50%'
 				},100);
-		   	 
 		});                  
 		   
+	},   
+	
+	paypal=function(id){
+		$.get('/admin/programpaypal',{id:id, req:'preview'},function(paypal_form){
+			$(paypal_form).first().dialog({
+				height:500,
+				width:450,
+				modal:true,
+				buttons: {
+					Update : function(){
+						var paypal = $(this).find('textarea[name=paypal_code]').val().trim(),
+							preview_ele = $(this).find('div.paypal-preview');
+						$.post('/admin/programpaypal', {id:id, req:'update', paypal:paypal},function(response){ 
+							console.log(response);
+							if(response == 1){
+								$.jGrowl("Paypal button saved.",{animateOpen:{opacity: 'show'}});
+								preview_ele.empty().html("<div class='icon-loading-middle'></div>");
+								$.get('/admin/programpaypal', {id:id,req:'preview'},function(paypal_update){
+									var paypal_btn = $(paypal_update).find('div.paypal-preview');
+									preview_ele.html(paypal_btn);
+								});					
+							}else{
+								$.jGrowl("An error occured. Please contact admainistrator.")
+							};
+						})
+					},
+					Close : function(){
+						$(this).dialog("close");
+					} 
+				},
+				close: function(){
+					$(this).dialog("destroy");
+					$('#form-admin-paypal').remove();
+				}
+
+			});
+		})
 	};
 	
 	return {
@@ -190,9 +238,17 @@ RBC.admin.program =(function (){
 		displayAll : function(program_id, edit_ele, view_ele){
 			detail_panel.preview(program_id, view_ele);
 			detail_panel.edit(program_id, edit_ele);
-		}
+		},
+		paypal:paypal
 	};
-}());  
+}());
+
+RBC.admin.nav = {
+	run: function(buttonset_ele, button_ele){
+		buttonset_ele.buttonset();
+		button_ele.button();
+	}
+}  
 
 RBC.home.swapbox = {
 	run: function(swapbox_ele,control_nav){
@@ -238,32 +294,10 @@ $(document).ready(function() {
 	if ($('#index-swapbox').length>0){
 		RBC.home.swapbox.run($('#index-swapbox'),$('nav.swapbox'));
 	}
-	
-	/*
-	if ($('#index-program').length>0){
-			programListAccord($('#index-program-list'));
-			function programListAccord(ul){ 
-				$(ul).children('div').each(function(i, val){
-					$(this).hide()
-				});
-				$(ul).children('li').each(function(i, val){
-					$(this).bind({
-						mouseenter: function(){
-							 $(this).nextAll('div').hide('slow');
-							 $(this).prevAll('div').hide('slow');
-						     $(this).next('div').show('fast');
-						},
-						
-					});
-				});
-				$(ul).parent('div').bind({
-					mouseleave: function(){
-						  $(ul).children('div').hide('slow');
-					}
-				});  
-			}
-		} */
-	  	
+   
+	if ($('nav#admin').length>0){ 
+		RBC.admin.nav.run($('nav#admin'),$('nav#admin a'));
+	}  	
 	
 	if ($('#admin-paypal-submit').length>0){
 		$('#admin-paypal-submit').button().bind({
@@ -471,16 +505,13 @@ $(document).ready(function() {
 				$( "#dialog-form" ).dialog( "open" );
 			});
 		}
-
 		chgpwd();
-		//console.log("adsfadsf");
-
 	}
 	
 	if ($('#admin-program-list').length>0){ 	
 		$('input:checkbox').checkbox().bind({
 			click:function(){
-				var pid = $(this).siblings('input[name$=program_id]').val(),
+				var pid = $(this).attr('class').split(' ')[0],
 				    p_status; 
 				if ($(this).attr('checked') == "checked"){
 					p_status = 0;
@@ -511,10 +542,19 @@ $(document).ready(function() {
 		});
 		 
 		
-		$("a.program-detail").bind({
+		$('a.program-detail').bind({
 			click : function(){
 				id = $(this).attr('class').split(" ")[0];
 				RBC.admin.program.displayAll(id, $(".program_left"),  $(".program_right"));
+				return false;
+			}
+		});
+		
+		$('a.program-paypal').bind({
+			click : function(){
+				$('#form-admin-paypal').dialog( "destroy" );
+				id = $(this).attr('class').split(" ")[0];
+				RBC.admin.program.paypal(id);
 				return false;
 			}
 		});
