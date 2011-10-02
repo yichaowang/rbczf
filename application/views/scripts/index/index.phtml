@@ -1,39 +1,45 @@
-<div id="main-wrapper" class="clearfix">
-	<div id="slideshow" class="grid_9">
+<div id="main-wrapper-index" class="clearfix">
+	<div id="flash-slideshow" class="grid_9 alpha omega">
 		<object width="866" height="320">
 			<param name="movie" value="/images/renewal_flash.swf">
 			<embed src="/images/renewal_flash.swf" width="866px" height="320px">
 			</embed>
 		</object>
-	</div>           
-	<div id="content" class="grid_9" >
-		<div id="welcome" class="grid_6 alpha">   
-			<div class="box-padding">
-				<h1>YOUR NEW LIFE STARTS TODAY</h1> 
-				<p><?php print_r ($this->intro[0]['value']) ?></p>		   
-			</div>
-			<div class="box-padding">
-				<iframe src="https://www.google.com/calendar/embed?height=400&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=sah1buirj30lnjc95hh6lnkk9g%40group.calendar.google.com&amp;color=%23182C57&amp;ctz=America%2FNew_York" style=" border-width:0 " width="520" height="400" frameborder="0" scrolling="no"></iframe>
-			</div>
+	</div>
+	<div class="clear"></div>
+	<div id="index-main">
+		<div id="index-swapbox">
+			<section class="welcome">
+				<h1><b>STRONG</b> IS THE NEW <em>SKINNY</em></h1>
+				<p>People of ALL levels , shapes, and sizes have gained great results with Renewal Body Bootcamp. Now you can too! Tired of the same routine or need a jump-start to your fitness? Then RENEW yourself today! Whether you are a beginner or fitness guru, come try Renewal Body Bootcamp's whole new approach to fitness. You work, you sweat, and best of all, you burn calories like crazy while having fun! We challenge your body to it?s limit through fun plyometric moves and bootcamp drills that work your entire body. Whether you want to lose weight, work on flexibility, agility, or speed training? This is the program for you!
+				</p>
+			</section>
+			<?php
+			 	$m = 0;
+				foreach ($this->programs as $program){
+
+				if ($program->active == 1){
+			?>
+	        <section class="<?=$m?>"><h1>Hello! I'm <?=$program->name;?> !!</h1></section>
+			<?php 
+				$m++;
+			}}; ?>
 		</div>
-		<div id="index-program" class="grid_3 omega">
-			<div class="box-padding white">						
-				<ul id="index-program-list">
-					<?php foreach ($this->programs as $program){ 
-						if ($program->active == 1){
-					?>
-                        <li class="blue">
-							<div>
-								<span><?=$program->name;?></span>
-							</div>
-						</li>
-						<div class="3">
-							<?=$program->paypal;?>
-						</div>
-					<?php }}; ?>
-				</ul>   
-			</div>
-		</div>
+		<nav class="swapbox">
+			<ul class="signup-list">
+				<?php
+				 	$u = 0;
+					foreach ($this->programs as $program){
+					 
+					if ($program->active == 1){
+				?>
+                    <li class="<?=$u;?>"><a href="#"><?=$program->name;?></a></li>
+				<?php 
+					$u++;
+				}}; ?>
+					<li class="back"><a href="#">&lsaquo;&lsaquo; back</a></li>
+			</ul>	
+		</nav>
 	</div>
 </div>
 

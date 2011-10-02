@@ -4,6 +4,9 @@ RBC = {
 	admin:{
 		program:{}
 	},
+	home:{
+		swapbox:{}
+	},
 	utility:{}
 };            
 
@@ -191,6 +194,38 @@ RBC.admin.program =(function (){
 	};
 }());  
 
+RBC.home.swapbox = {
+	run: function(swapbox_ele,control_nav){
+		var section_height = swapbox_ele.children('section').first().outerHeight(); 
+		control_nav.find('li').bind({
+			click: function(){
+				var postion = Number($(this).attr('class')) + 1,
+				 	swapbox_top_pos = (-1) * postion * section_height;
+				
+				control_nav.find('.active').removeClass('active');
+
+				if ($(this).attr('class')=='back'){
+					swapbox_ele.animate({
+						'top': 0
+					},1000);
+					$(this).hide();
+					return false
+				}   
+				
+				$(this).children('a').addClass('active');
+				swapbox_ele.animate({
+					'top': Number(swapbox_top_pos)
+				},1000);
+				
+				control_nav.find('.back').show();
+				return false;
+			}
+		})
+	}
+};
+
+
+
 var c = RBC.utility.reloadCSS;
 
 $(document).ready(function() {  
@@ -198,31 +233,37 @@ $(document).ready(function() {
 	$(window).focus(function(){
 		//RBC.utility.reloadCSS();
 		//location.reload(true);
-	});
+	}); 
 	
+	if ($('#index-swapbox').length>0){
+		RBC.home.swapbox.run($('#index-swapbox'),$('nav.swapbox'));
+	}
+	
+	/*
 	if ($('#index-program').length>0){
-		programListAccord($('#index-program-list'));
-		function programListAccord(ul){ 
-			$(ul).children('div').each(function(i, val){
-				$(this).hide()
-			});
-			$(ul).children('li').each(function(i, val){
-				$(this).bind({
-					mouseenter: function(){
-						 $(this).nextAll('div').hide('slow');
-						 $(this).prevAll('div').hide('slow');
-					     $(this).next('div').show('fast');
-					},
-					
+			programListAccord($('#index-program-list'));
+			function programListAccord(ul){ 
+				$(ul).children('div').each(function(i, val){
+					$(this).hide()
 				});
-			});
-			$(ul).parent('div').bind({
-				mouseleave: function(){
-					  $(ul).children('div').hide('slow');
-				}
-			});  
-		}
-	}   	
+				$(ul).children('li').each(function(i, val){
+					$(this).bind({
+						mouseenter: function(){
+							 $(this).nextAll('div').hide('slow');
+							 $(this).prevAll('div').hide('slow');
+						     $(this).next('div').show('fast');
+						},
+						
+					});
+				});
+				$(ul).parent('div').bind({
+					mouseleave: function(){
+						  $(ul).children('div').hide('slow');
+					}
+				});  
+			}
+		} */
+	  	
 	
 	if ($('#admin-paypal-submit').length>0){
 		$('#admin-paypal-submit').button().bind({

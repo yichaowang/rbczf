@@ -11,18 +11,16 @@ body{
 }
 
 body p{
-	font-weight: 300;
 	font-size: 16px;
-	color :#555;
+	line-height:24px;
+	color :#484848;
 }
 
-body p{
-	text-shadow: #999 0px 1px 1px;
-}
 
 body p{
 	margin-top: 1em;
 	margin-bottom: 1em;
+	text-align:justify;
 }
 
 h1,h2,h3,h4{
@@ -32,7 +30,7 @@ h1,h2,h3,h4{
 h1{  
 	font-size:2em;
 	line-height:2em;
-	color: #0795b3;
+	color: #586b79;
 }
 
 h2{
@@ -72,7 +70,12 @@ div.label-list span{
 	clear:right;
 }
 
+a {
+	text-decoration:none;
+}                       
 
+a:hover{
+}
 
 /*
 	Table
@@ -101,35 +104,129 @@ div#banner{
 }
 
 div#main-wrapper {
-	padding:16px 0px;
+	padding:16px 0px 0px 0px;
 	background-image: -webkit-gradient(
-	    linear,
-	    left bottom,
-	    left top,
-	    color-stop(0.05, rgb(37,142,156)),
-	    color-stop(0.53, rgb(60,212,235))
-	);
-	background-image: -moz-linear-gradient(
-	    center bottom,
-	    rgb(37,142,156) 5%,
-	    rgb(60,212,235) 53%
-	);
-	
-}
-
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.05, rgb(37,142,156)),
+		color-stop(0.53, rgb(60,212,235))
+		);
+   	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(37,142,156) 5%,
+		rgb(60,212,235) 53%
+	);    
+} 
 
 div#welcome{
 	background-color:#fff;
 }
 
 div#footer{
-	background:#fff;
-	padding:10px;
-}       
+	font: 20px "Oswald", sans-serif;
+	color:#acacac;
+	text-align:right;
+	background:#34363e;    
+	padding:10px 30px; 
+	position:relative;
+	margin-bottom:70px;
+} 
+
+
+div#footer a.admin{
+	float:left;
+	color:#fff;
+	font-size:12px;
+	margin-top:10px;
+	text-decoration:none;
+}  
+
+div#footer img#yoga{ 
+	position:absolute;
+	bottom:43px;
+	right:20px;
+	
+}    
 
 /*
 	Index
-*/ 
+*/           
+
+div#index-main{
+	position:relative;
+	height:500px;
+	overflow:hidden;
+}
+
+div#index-swapbox{
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+div#index-main section{
+	padding:20px 400px 0px 30px;
+	height:480px;
+}
+
+div#index-main section:not(.welcome){
+	background:url('/images/bg-pattern2.png');
+}
+
+section.welcome{
+	background:url('/images/bg-sand.png') repeat;
+}          
+
+section.welcome h1{
+	font-size:28px;
+}
+
+section.welcome h1 b{
+	font-size:35px;
+} 
+
+section.welcome h1 em{
+	font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+	font-size:34px;
+	font-weight:300;
+}    
+
+     
+nav.swapbox{
+	position:absolute;
+	top:20px;
+	right:30px;
+	font-family: "Droid Sans", sans-serif;
+	font-weight:700;
+	text-shadow: 0 1px 0 white; 
+	width:290px;
+	min-height:430px;
+	margin-top:-25px;
+	background: url('/images/bg-index-side-program.png') no-repeat;
+	padding:73px 0px 0px 0px;
+} 
+
+nav.swapbox ul li{
+	margin:5px 0;
+}
+
+nav.swapbox ul li a{
+	display:block; 
+	padding:0 20px;
+	letter-spacing:-1px;
+	font-size:20px;
+	color:#586b79;
+}
+
+nav.swapbox ul li a.active{
+	background: url('/images/bg-index-caret.png') no-repeat 0% 50%;
+} 
+
+
+
+/*
+
 div#index-program > div{
 	padding-top:87px;
 	background:#fff url('/images/bg-index-program-banner.png') no-repeat top left;
@@ -182,7 +279,8 @@ ul#index-program-list > div{
 ul#index-program-list .blue div{
 	padding:7px;
 	
-}
+}*/
+
 
 
 
@@ -251,14 +349,13 @@ div#navigation li a.about{
 /*
 	Slideshow
 */
-div#slideshow {
+div#flash-slideshow {
 	width:866px;
 	display:block;
 	height: 320px;           
 	background:#616161;
-	border: 1px solid #616161;
-	margin-bottom:20px;    
-	
+	padding:17px 17px 17px 17px;
+	background: #3cd4eb;
 }   
 
 /*
