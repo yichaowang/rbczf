@@ -104,6 +104,18 @@ RBC.admin.program =(function (){
 				detail_panel.preview(id, $(".program_right"))
 			}
 		});
+		
+		$('div.program-price').editable('/admin/programcontent',{
+			submitdata: {id: id, item: 'price'},
+			indicator : "<img src='/images/icon-loading.gif'>",
+			type	  : "text",
+			tooltip   : "Click to edit...",
+			submit  : 'Update',
+			style  : "inherit",
+			callback : function(){
+				detail_panel.preview(id, $(".program_right"))
+			}
+		});
 
 		$('.item-name span, .item-unit span').editable('/admin/programitem',{
 			submitdata: function(){

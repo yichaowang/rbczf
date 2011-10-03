@@ -8,6 +8,7 @@ body{
 	color: #363636;
 	font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
 	background: #191919 url("../images/bg-body.png") repeat left top;
+	padding-bottom:90px;
 }
 
 body p{
@@ -77,6 +78,11 @@ a {
 a:hover{
 }
 
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
 /*
 	Table
 */
@@ -105,6 +111,7 @@ div#banner{
 
 div#main-wrapper {
 	padding:16px 0px 16px 0px;
+	background: #3cd4eb;
 	background-image: -webkit-gradient(
 		linear,
 		left bottom,
@@ -128,18 +135,17 @@ div#footer{
 	color:#acacac;
 	text-align:right;
 	background:#34363e;
-	    
 	padding:10px 30px; 
 	position:relative;
-	margin-bottom:70px;
 } 
 
 
 div#footer a.admin{
-	float:left;
+	position:absolute;
+	top:20px;
+	left:20px;
 	color:#fff;
 	font-size:12px;
-	margin-top:10px;
 	text-decoration:none;
 }  
 
@@ -162,8 +168,8 @@ div#index-main{
 
 div#index-swapbox{
 	position:absolute;
-	top:0;
-	left:0;
+	top:0px;
+	left:0px;
 }
 
 div#index-main section{
@@ -171,12 +177,12 @@ div#index-main section{
 	height:580px;
 }
 
-div#index-main section:not(.welcome){
+div#index-main section.classes{
 	background:url('/images/bg-pattern2.png');
 	
 }  
 
-div#index-main section:not(.welcome) h1{
+div#index-main section.classes h1{
 	font-family: "Droid Sans", sans-serif;
 	font-weight: 700;
 	text-shadow: 0 1px 0 white; 
@@ -184,7 +190,7 @@ div#index-main section:not(.welcome) h1{
 	padding-bottom:15px;
 }
 
-div#index-main section:not(.welcome) label{
+div#index-main section.classes label{
 	float:none;                            
 	font-size:20px;
 	font-family: "Droid Sans", sans-serif;
@@ -193,7 +199,7 @@ div#index-main section:not(.welcome) label{
 	color: #586b79;
 }                                   
 
-div#index-main section:not(.welcome) > div{
+div#index-main section.classes > div{
 	padding: 0 0 15px 2px;
 } 
 
