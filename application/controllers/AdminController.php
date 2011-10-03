@@ -159,7 +159,7 @@ class AdminController extends Zend_Controller_Action
 
 		$id = $this->_getParam('id');
 		$req = $this->_getParam('req');
-		$paypal_code = $this->_getParam('paypal');
+		$paypal_code = stripslashes($this->_getParam('paypal')); 
 		$program_model = new Application_Model_Programs;
 		$program_row = $program_model->find($id)->current();
 		

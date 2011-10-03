@@ -264,11 +264,13 @@ RBC.home.swapbox = {
 					swapbox_ele.animate({
 						'top': 0
 					},1000);
-					$(this).hide();
+					$(this).hide(); 
+					$('iframe#google-cal').show();
 					return false
 				}   
 				
-				$(this).children('a').addClass('active');
+				$(this).children('a').addClass('active'); 
+				$('iframe#google-cal').hide();
 				swapbox_ele.animate({
 					'top': Number(swapbox_top_pos)
 				},1000);
