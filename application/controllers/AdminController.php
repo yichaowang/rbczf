@@ -86,8 +86,54 @@ class AdminController extends Zend_Controller_Action
 		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
 		
 		$program = new Application_Model_Programs;
-		$this->view->programs = $program->fetchAll();
-	}       
+		$this->view->programs = $program->fetchAll($program->select()->order('id ASC'));
+	}         
+	
+	public function programaddAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login'); 
+		$this->_helper->layout->disableLayout();
+		
+		$program_name = $this->_getParam('name');		
+        if ($program_name==""){
+	    	$this->getHelper('viewRenderer')->renderScript('admin/partial/program/add_program.phtml');
+		} else {
+			$this->getHelper('viewRenderer')->setNoRender(true);
+			
+			$program_model = new Application_Model_Programs;
+			$new_program = array(
+				'name' 		=> $program_name,
+				'p_measure' => 'Heart Rate:bpm;Jacks:per min;Plank:in 2 mins;Sprints:per min;Sit Ups:per min;Jump Rope:per min;Burpees:per min;Push Ups:per min',
+				'active' 	=> 0
+			);
+			$program_model->insert($new_program);
+			echo 1;
+		}
+		
+	}
+	
+	public function programdeleteAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+		 
+		$this->_helper->layout->disableLayout();
+		$this->getHelper('viewRenderer')->setNoRender(true);
+		
+		$program_id = $this->_getParam('id');
+				
+        if ($program_id!=""){
+			$program_model = new Application_Model_Programs;
+			$program_model->delete('id ='.$program_id);
+			$this->_redirect('/admin/program');
+		}
+
+	}
 	
 	public function programactiveAction(){
 		if (!Zend_Auth::getInstance()->hasIdentity()) {

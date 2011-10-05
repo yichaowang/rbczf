@@ -1,55 +1,38 @@
 <div id="main-wrapper" class="clearfix admin">
 	<div class="grid_9 white">
 		<div class="grid_9">
-			<h1>Administration</h1>
+			<h1>Administration - Clients</h1>
 			<?php echo $this->partial('admin/nav_partial.phtml')?>
-			<div class="clear"></div>
-			<div class="grid_4 alpha">
-				<h2>Clients</h2>
-				<br>  
-				<table id="admin-client" width="100%">
+			<div class="clear"></div> 
+
+			<div id="admin-client">
+				<table id="admin-client">
 					<tr>
-						<th>Name</th>
-						<th>Email</th>
-						<th>Last Login</th>
+						<th width="25%">Name</th>
+						<th width="25%">Email</th>
+						<th width="15%">Date Joined</th>
+						<th width="15%">Last Login</th>
+						<th width="15%" class="txt-center">Classes Enrolled</th>
+						<th width="5%" class="txt-center">Edit</th>
 					</tr>
 					<?php 
-					foreach($this->users as $user){ ?>
+				foreach($this->users as $user){ ?>
 					<tr class="<?=$user['id']; ?>">   
-						<td><?= $user['fname'] ?> <?= $user['lname'] ?>
-						<?php if($user['is_admin']==1) echo "<img src='/images/icon-key.png'/>"?>
-						</td> 
-						<td><?= $user['email'] ?></td> 
-						<td><?php echo date("m/d-Y", $user['lastlogindate']) ?></td>
+						<td><?= $user['fname'] ?> <?= $user['lname'] ?> <?php if($user['is_admin']==1) echo "<div class='icon-key'></div>"?></td> 
+						<td><?= $user['email'] ?></td>
+						<td><?php echo date("M j Y", $user['lastlogindate']) ?></td>
+						<td><?php echo date("M j Y", $user['regdate']) ?></td>
+						<td class="class-enroll txt-center"><?php echo count($user['p_enrolled']);?></td>
+						<td class="txt-center"><span class='icon-pencil'></span></td>
 					<tr>
-					<?php } ?>
+				<?php } ?>
+					<tr>
+						<td class="total" colspan="6">Total Clients: <?=count($this->users)?></td>
+					</tr>
 				</table>
 			</div>
-			<div id="admin-client-detail" class="grid_4 omega"> 
-				<?php 
-					foreach($this->users as $user){
-				?>
-					<div class="<?=$user['id']?>"> 
-						<p><span class="fname editible-textbox"><?=$user['fname']?>&nbsp;</span><span class="lname editible-textbox"><?=$user['lname']?></span></p>
-						<label>Email:</label><span class="email"><?=$user['email']?></span>
-						<div class="clear"></div>
-						<label>Password</label><span class="rst_pwd"><a class="ui-button-apperence">Reset to 123456</a></span>
-						<div class="clear"></div>
-						<label>Date Registered:</label><span><?=date("m/d-Y", $user['regdate'])?></span>
-						<label>Program Enrolled:</label> 
-						<span><?php foreach($user['p_enrolled'] as $u_program){ ?><?=$u_program['pname']?><br/><?php }?></span>
-						<div class="clear"></div>
-						<label>Admin:</label> 
-						<span><?php if($user['is_admin']==1){ echo "Yes <img src='/images/icon-key.png'/>";}else{echo "No";};?></span> 
-						<div class="clear"></div>
-					</div>
-			    <?php 
-					}
-				?>
-				
-				 
-			</div>
-			<div class="clear"></div>
-		</div>       
+		</div>
 	</div>
-</div> 
+  	<div class="clear"></div>
+</div>
+   

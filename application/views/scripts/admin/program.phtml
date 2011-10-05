@@ -12,14 +12,14 @@
 						<input class="<?=$program["id"]?> program-switch" name="checkbox.1.2" type="checkbox" id="check" <?php if ($program["active"]==1){ echo 'checked=""'; } ?> style="position: absolute; z-index: -1; visibility: hidden; ">  
 						<a class="<?=$program["id"]?> program-detail ui-button-apperence" href="#">Detail</a> &nbsp; 
 						<a class="<?=$program["id"]?> program-paypal ui-button-apperence" href="#">Paypal</a> &nbsp;
-						<a class="ui-button-apperence" href="/admin/program/delete/<?=$program["id"]?>" onclick="return confirm('All users measurements of this program will be lost. Continue?')">Delete</a>  
+						<a class="ui-button-apperence" href="/admin/programdelete?id=<?=$program["id"]?>" onclick="return confirm('All users measurements of this program will be lost. Continue?')">Delete</a>  
 					</li>
 					<hr>				   
 				<?php }?>
 				</ul>
 			</div>
 			<br>
-			<a class="ui-button-apperence" href="/admin/program#add-program">Add New Program</a>
+			<a class="program-add ui-button-apperence" href="/admin/program#add-program">Add New Program</a>
    		</div>           
 		<div class="grid_4 program_left"></div>
 		<div class="grid_4 program_right"></div>    

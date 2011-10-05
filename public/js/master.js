@@ -41,7 +41,71 @@ RBC.admin.program =(function (){
 					editable(pid);
 				});
 		},
-	},  
+	},       
+	
+	paypal=function(id){
+		$.get('/admin/programpaypal',{id:id, req:'preview'},function(paypal_form){
+			$(paypal_form).first().dialog({
+				height:500,
+				width:450,
+				modal:true,
+				buttons: {
+					Update : function(){
+						var paypal = $(this).find('textarea[name=paypal_code]').val().trim(),
+							preview_ele = $(this).find('div.paypal-preview');
+						$.post('/admin/programpaypal', {id:id, req:'update', paypal:paypal},function(response){ 
+							console.log(response);
+							if(response == 1){
+								$.jGrowl("Paypal button saved.",{animateOpen:{opacity: 'show'}});
+								preview_ele.empty().html("<div class='icon-loading-middle'></div>");
+								$.get('/admin/programpaypal', {id:id,req:'preview'},function(paypal_update){
+									var paypal_btn = $(paypal_update).find('div.paypal-preview');
+									preview_ele.html(paypal_btn);
+								});					
+							}else{
+								$.jGrowl("An error occured. Please contact admainistrator.")
+							};
+						})
+					},
+					Close : function(){
+						$(this).dialog("close");
+					} 
+				},
+				close: function(){
+					$(this).dialog("destroy");
+					$('#form-admin-paypal').remove();
+				}
+
+			});
+		})
+	},   
+	
+	addProgram = function(){
+		$.get('/admin/programadd',{},function(add_form){
+			$(add_form).dialog({
+				height:150,
+				width:350,
+				modal:true,
+				buttons: {
+					Create : function(){
+						var program_name = $(this).find('input[name=program-name]').val();
+						$.post('/admin/programadd',{name:program_name, req:'create'},function(status){
+							if (status == 1){
+								window.location.replace('http://rbczf.local/admin/program');
+							}
+						})
+					},                         
+					Cancel : function(){
+						$(this).dialog("close");
+					}
+				},
+				close: function(){
+					$(this).dialog("destroy");
+					$('#form-admin-add-program').remove();
+				}
+			});
+		})
+	}
 	
 	addItem = function(add_btn, pid, add_form){ 
 		add_btn.button({ icons:{primary:'ui-icon-plus'}});
@@ -203,46 +267,9 @@ RBC.admin.program =(function (){
 				},100);
 		});                  
 		   
-	},   
-	
-	paypal=function(id){
-		$.get('/admin/programpaypal',{id:id, req:'preview'},function(paypal_form){
-			$(paypal_form).first().dialog({
-				height:500,
-				width:450,
-				modal:true,
-				buttons: {
-					Update : function(){
-						var paypal = $(this).find('textarea[name=paypal_code]').val().trim(),
-							preview_ele = $(this).find('div.paypal-preview');
-						$.post('/admin/programpaypal', {id:id, req:'update', paypal:paypal},function(response){ 
-							console.log(response);
-							if(response == 1){
-								$.jGrowl("Paypal button saved.",{animateOpen:{opacity: 'show'}});
-								preview_ele.empty().html("<div class='icon-loading-middle'></div>");
-								$.get('/admin/programpaypal', {id:id,req:'preview'},function(paypal_update){
-									var paypal_btn = $(paypal_update).find('div.paypal-preview');
-									preview_ele.html(paypal_btn);
-								});					
-							}else{
-								$.jGrowl("An error occured. Please contact admainistrator.")
-							};
-						})
-					},
-					Close : function(){
-						$(this).dialog("close");
-					} 
-				},
-				close: function(){
-					$(this).dialog("destroy");
-					$('#form-admin-paypal').remove();
-				}
-
-			});
-		})
 	};
 	
-	return {
+	return {                 				
 		displayEdit: function(id, edit_ele){
 			detail_panel.edit(id, edit_ele, editable); 
 		},
@@ -251,7 +278,8 @@ RBC.admin.program =(function (){
 			detail_panel.preview(program_id, view_ele);
 			detail_panel.edit(program_id, edit_ele);
 		},
-		paypal:paypal
+		paypal:paypal,
+		addProgram:addProgram
 	};
 }());
 
@@ -312,41 +340,6 @@ $(document).ready(function() {
 	if ($('nav#admin').length>0){ 
 		RBC.admin.nav.run($('nav#admin'),$('nav#admin a'));
 	}  	
-	
-	if ($('#admin-paypal-submit').length>0){
-		$('#admin-paypal-submit').button().bind({
-			click: function(){
-				var paypal_code = $("textarea[name$=paypal_code]").val().trim(),
-				 	paypal_pid  = $("input[name$=pid]").val();
-				
-				$.get(
-					"/admin/paypalbtn/",
-					{paypal_btn:paypal_code, pid:paypal_pid},
-					function(response){
-						if (response){
-							setTimeout(function(){
-								 window.location = "/admin/program/paypal/"+paypal_pid;
-							}, 2000);
-							$.jGrowl("Paypal button saved. Refreshing...",{
-								animateOpen: {
-									opacity: 'show'
-								}
-							});
-						} else {
-							$.jGrowl("An error has happen, please contact administrator.",{
-								animateOpen: {
-									opacity: 'show'
-								}
-							});
-						};
-					}
-				);
-			}
-		});
-	} 
-	
-
-	
 	
 	if ($('#progress-header').length>0) {
 		(function userProgress() {
@@ -571,7 +564,13 @@ $(document).ready(function() {
 				RBC.admin.program.paypal(id);
 				return false;
 			}
-		});
+		}); 
+		
+		$('a.program-add').bind({
+			click: function(){
+				RBC.admin.program.addProgram($(this));
+			}
+		})
 		
 	};  
 	
