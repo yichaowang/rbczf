@@ -41,7 +41,7 @@ RBC.admin.program =(function (){
 					remove($("#admin-program-detail-sortable"),pid);
 					editable(pid);
 				});
-		},
+		}
 	},       
 	
 	paypal=function(id){
@@ -326,7 +326,7 @@ RBC.home.swapbox = {
 RBC.home.gallery = {
     settings : {
 		'container_id' : '#index-gallery',
-		'start_pos' : '0',
+		'start_pos' : '0'
 	},  
 	
 	setGallery : function(){
@@ -347,11 +347,12 @@ RBC.home.gallery = {
 		this.setSize();
 		this.prep();      
 		
-		this._gallery.children('figure.'+this.settings.start_pos).show().delay(1500).switchClass('active-start','active', 500);                         
-	    this._gallery.children('figure.'+this.prev(this.settings.start_pos)).show().delay(1500).switchClass('left-s-start','left-s',500);
-		this._gallery.children('figure.'+this.next(this.settings.start_pos)).show().delay(1500).switchClass('right-s-start','right-s',500);
-		this._gallery.find('nav').css({'left': (900-22*this._size)/2});          
-		this._gallery.find('div.'+this.settings.start_pos).delay(2000).slideDown();    
+		this._gallery.children('figure.'+this.settings.start_pos).show().delay(1000).switchClass('active-start','active', 500);                         
+	    this._gallery.children('figure.'+this.prev(this.settings.start_pos)).show().delay(1000).switchClass('left-s-start','left-s',500);
+		this._gallery.children('figure.'+this.next(this.settings.start_pos)).show().delay(1000).switchClass('right-s-start','right-s',500);
+		this._gallery.find('nav').css({'left': (900-22*this._size)/2});
+		this._gallery.find('div.gallery-caption-shade-start').show().delay(1200).switchClass('gallery-caption-shade-start', 'gallery-caption-shade', 1000);
+		this._gallery.find('div.'+this.settings.start_pos).delay(1800).slideDown();    
 		
 		this._gallery.find('nav li').bind({
 			click : function(){
@@ -381,12 +382,13 @@ RBC.home.gallery = {
 		})   
 		     
 		figures.hide();
-	   	$('div.pic-caption').hide(); 
+	   	$('div.pic-caption').hide();
+	   	$('div.gallery-caption-shade-start').hide();
 	
 	    this._gallerynav.find('li.'+this.settings.start_pos).addClass('active');
 		this._gallery.children('figure.'+this.settings.start_pos).addClass('active-start');
-		this._gallery.children('figure.'+this.prev(this.settings.start_pos)).show().addClass('left-s-start');
-	    this._gallery.children('figure.'+this.next(this.settings.start_pos)).show().addClass('right-s-start');
+		this._gallery.children('figure.'+this.prev(this.settings.start_pos)).addClass('left-s-start');
+	    this._gallery.children('figure.'+this.next(this.settings.start_pos)).addClass('right-s-start');
 	},  
 	
 	moveTo : function(index){ 
@@ -474,8 +476,8 @@ $(document).ready(function() {
 									"mname" : measures[j].split(":")[0],
 									"before" : measures[j].split(":")[1].split(",")[0],
 									"after" : measures[j].split(":")[1].split(",")[1],
-									"unit" : measures[j].split(":")[2],
-								});    
+									"unit" : measures[j].split(":")[2]
+								})    
 							};   
 							
 							program[i] = {
