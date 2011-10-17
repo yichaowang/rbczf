@@ -11,19 +11,15 @@ body{
 	padding-bottom:90px;
 }
 
-body p{
-	font-size: 16px;
-	line-height:24px;
-	color :#484848;
-}
-
-
-body p{
-	margin-top: 1em;
-	margin-bottom: 1em;
-	text-align:justify;
-}
-
+	body p{
+		font-size: 16px;
+		line-height:24px;
+		color :#484848;  
+		margin-top: 1em;
+		margin-bottom: 1em;
+		text-align:justify;
+	}
+    
 h1,h2,h3,h4{
 	font-family: "Droid Sans", sans-serif;
 } 
@@ -31,13 +27,13 @@ h1,h2,h3,h4{
 h1{  
 	font-size:2em;
 	line-height:2em;
-	color: #586b79;
+	color: #4676ad;
 }
 
 h2{
 	font-size:1.8em;
 	line-height:1.8em;
-	color:#586b79;
+	color:#4676ad;
 }                 
 
 h3{
@@ -70,12 +66,13 @@ a {
 	text-decoration:none;
 }                       
 
-a:hover{
-}
-
 article,aside,details,figcaption,figure,
 footer,header,hgroup,menu,nav,section { 
     display:block;
+}               
+
+figcaption{
+	position:absolute;
 }
 
 /*
@@ -161,6 +158,119 @@ div#index-main{
 	overflow:hidden;
 }
 
+div#index-gallery{
+	background:#2c4664;              
+	position:relative;
+	height:350px;
+	border-top: 3px solid #6ad1e9;
+	border-bottom: 11px solid #7db1d8; 
+}                    
+
+	div.gallery-caption-shade{
+		position:absolute;
+		width:100%;
+		bottom:18px;
+		background-color: rgba(99, 41, 41, 0.77);
+		height:52px;   
+		z-index:2;		
+	}        
+	
+	div#index-gallery > figure {
+		-webkit-box-shadow: 0px 0px 10px 1px rgba(00, 00, 00, 0.75);
+		-moz-box-shadow: 0px 0px 10px 1px rgba(00, 00, 00, 0.75);
+		box-shadow: 0px 0px 10px 1px rgba(00, 00, 00, 0.5);
+		background-color:#fff;
+	}
+	
+	div#index-gallery > figure > img{
+		height:100%;
+		width:100%;
+	}
+	
+	div#index-gallery > figure.active-start {
+		position: absolute;
+		left: 443px;
+		top: 169px;
+		height: 0px;
+		width: 0px;
+		z-index:1;
+	}   
+	
+	div#index-gallery > figure.active {
+		position: absolute;
+		left: 233px;
+		top: 29px;
+		height: 279px;
+		width: 419px;
+		z-index:1;
+	}  
+	
+	div#index-gallery > figure.left-s-start {
+		position: absolute;
+		left: 183px;
+		top: 164px;
+		height: 0px;
+		width: 0px;
+	}  
+	
+	div#index-gallery > figure.left-s {
+		position: absolute;
+		left: 24px;
+		top: 58px;
+		height: 212px;
+		width: 318px;
+		cursor:pointer;
+	}
+	
+	div#index-gallery > figure.right-s-start {
+		position: absolute;
+		right: 183px;
+		top: 164px;
+		height: 0px;
+		width: 0px;   
+	}
+	
+	div#index-gallery > figure.right-s {
+		position: absolute;
+		right: 24px;
+		top: 58px;
+		height: 212px;
+		width: 318px;
+		cursor:pointer;
+	}       
+	
+	div#index-gallery div.pic-caption{
+		position:absolute;
+		left:242px;
+		top:285px;                  
+		font-weight:700;
+		color:#fff;
+		font-size:12px;
+		z-index:100;
+	}  
+	
+	div#index-gallery nav{
+		position:absolute;
+		top:314px;
+		z-index:100;
+	}
+	
+	div#index-gallery nav ul > li{
+		display:block;
+		background:url('/images/icon-gallery-nav') no-repeat;
+		height:13px;
+		width:13px;                                          
+		padding-right:9px;
+		float:left;
+		text-indent:-9999px;  
+		cursor:pointer;
+	} 
+	
+	div#index-gallery nav ul > li.active{
+		background:url('/images/icon-gallery-nav-active') no-repeat;
+	}
+	
+
 div#index-swapbox{
 	position:absolute;
 	top:0px;
@@ -202,10 +312,8 @@ div#index-main section > div.paypal-btn{
 	padding:0px 0 5px 5px;
 }
 
-
-
 section.welcome{
-	background:url('/images/bg-sand.png') repeat;
+	background:url('/images/bg-pattern2.png');
 }          
 
 section.welcome h1{ 
@@ -251,7 +359,7 @@ nav.swapbox ul li a{
 	padding:0 20px;
 	letter-spacing:-1px;
 	font-size:20px;
-	color:#586b79;
+	color:#4676ad;
 }
 
 nav.swapbox ul li a.active{
