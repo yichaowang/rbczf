@@ -1,22 +1,18 @@
 <div id="main-wrapper-index" class="clearfix">
-	<div id="index-gallery"> 
-		<figure><img src="/images/gallery-index/Bootcamp_4dips.jpg"></figure>
-		<div class="pic-caption">Bootcamp plank at Grand Rapids Park 0</div>
-		<figure><img src="/images/gallery-index/Bootcamp_2plank.jpg"></figure> 
-		<div class="pic-caption">Bootcamp plank at Grand Rapids Park 1</div>
-		<figure><img src="/images/gallery-index/Bootcamp_5running.jpg"></figure> 
-		<div class="pic-caption">Bootcamp plank at Grand Rapids Park 2</div>
-		<figure><img src="/images/gallery-index/Bootcamp_6jumps.jpg"></figure>
-		<div class="pic-caption">Bootcamp plank at Grand Rapids Park 3</div>  
+	<div id="index-gallery">
+		<?php foreach ($this->gallery as $picture){?>
+			<figure><img src="<?echo '/'.$picture['src']?>"></figure>
+			<div class="pic-caption"><?=$picture['caption']?></div>
+		<?php } ?>    
 		<nav>
 			<ul>
-				<li>0</li>
-				<li>1</li>
-				<li>2</li>
-				<li>3</li>
+				<?php 
+				foreach ($this->gallery as $picture){?>
+				<li></li>
+				<?php } ?>    
 			</ul>
 		</nav>
-		<div class="gallery-caption-shade-start">rt</div>
+		<div class="gallery-caption-shade-start"></div>
 	</div>
 	<div class="clear"></div>
 	<div id="index-main">

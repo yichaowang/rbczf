@@ -669,6 +669,81 @@ class AdminController extends Zend_Controller_Action
 				)
 	   	);
 	   	echo $update_status;
+	}  
+	
+	public function galleryAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}               
+		
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');    
+		
+		$gallery_model = new Application_Model_Gallery();                            
+		$this->view->gallery = $gallery_model->fetchAll($gallery_model->select()->order('seq'));
+		
+		
+	}                                                                       
+	
+	public function galleryuploadAction(){
+		 if (!Zend_Auth::getInstance()->hasIdentity()) {
+				$this->_redirect('/admin/login');
+			}               
+                        
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');   
+		
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);    
+		
+		$gallery_model = new Application_Model_Gallery();                            
+		
+
+		if (isset($_FILES['ufile'])){
+			$dir = 'images/gallery-index/';
+			$filedir = $dir . $_FILES['ufile']['name'];                             
+			if (move_uploaded_file($_FILES['ufile']['tmp_name'], $filedir)){
+				$gallery_model->insert(array(
+					'filename' => $_FILES['ufile']['name'],
+					'caption' => $_FILES['ufile']['name'],
+					'src' => $filedir,
+					'seq' => 0
+				));   
+			}                            
+		}          
+		$this->_redirect('/admin/gallery');
+	}
+	
+	public function galleryupdateAction(){
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			$this->_redirect('/admin/login');
+		}               
+		
+		$sess = new Zend_Session_Namespace('renewal.auth');
+		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
+		
+		$this->_helper->layout->disableLayout(); 
+		$this->getHelper('viewRenderer')->setNoRender(true);
+		
+		$id = $this->_getParam('id');
+		$item = $this->_getParam('item');
+		$value = $this->_getParam('value');
+		$delete = $this->_getParam('delete');
+	    
+		$gallery_model = new Application_Model_Gallery;
+		$gallery_row = $gallery_model->find($id)->current();
+		
+		if ( $delete == "" ){
+			$gallery_row->$item = $value;
+			$gallery_row->save(); 
+			echo $value;
+		} else {
+			$dir = $gallery_row->src;
+			unlink($dir);
+			$gallery_row->delete();
+		}
+		
+	
 	}
     
 	public function contentsAction(){

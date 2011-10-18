@@ -3,7 +3,8 @@ var RBC = RBC || {};
 RBC = {
 	admin:{
 		nav:{},
-		program:{}
+		program:{},
+		gallery:{}
 	},
 	home:{
 		swapbox:{},
@@ -19,7 +20,14 @@ RBC.utility = (function(){
 			$('#mastercss').attr('href', href+'?reload='+ new Date().getTime());
 		}
 	} 
-}());
+}());     
+
+RBC.admin.nav = {
+	run: function(buttonset_ele, button_ele){
+		buttonset_ele.buttonset();
+		button_ele.button();
+	}
+}
 
 RBC.admin.program =(function (){
 	var detail_panel = {
@@ -282,14 +290,38 @@ RBC.admin.program =(function (){
 		paypal:paypal,
 		addProgram:addProgram
 	};
-}());
+}());   
 
-RBC.admin.nav = {
-	run: function(buttonset_ele, button_ele){
-		buttonset_ele.buttonset();
-		button_ele.button();
+
+RBC.admin.gallery = {
+	run: function(){
+		this.contentEditable();
+		$('table#admin-gallery .icon-delete').bind({
+			click: function(){
+				RBC.admin.gallery.del(parseInt($(this).parents('tr').attr('class')));
+			}
+		})
+	},   
+	             
+	contentEditable : function(){
+		$('table#admin-gallery').find('td.caption, td.seq').editable('/admin/galleryupdate',{
+			submitdata: function(){
+				return {id: $(this).parent('tr').attr('class'), item: $(this).attr('class')};
+			},
+			indicator : "<img src='/images/icon-loading.gif'>",
+			type	  : "text",
+			tooltip   : "Click to edit..."
+		});
+	},
+	
+	del : function(id){
+		$.get("/admin/galleryupdate",{
+			id: id, delete:1
+		}, function(){
+			location.reload();
+		})
 	}
-}  
+}
 
 RBC.home.swapbox = {
 	run: function(swapbox_ele,control_nav){
@@ -339,6 +371,7 @@ RBC.home.gallery = {
 	},                        
     
 	run : function(options){		
+		var slidetimer;
 		if (options) {
 			$.extend(this.settings, options);
 		}
@@ -351,8 +384,9 @@ RBC.home.gallery = {
 	    this._gallery.children('figure.'+this.prev(this.settings.start_pos)).show().delay(1000).switchClass('left-s-start','left-s',500);
 		this._gallery.children('figure.'+this.next(this.settings.start_pos)).show().delay(1000).switchClass('right-s-start','right-s',500);
 		this._gallery.find('nav').css({'left': (900-22*this._size)/2});
-		this._gallery.find('div.gallery-caption-shade-start').show().delay(1200).switchClass('gallery-caption-shade-start', 'gallery-caption-shade', 1000);
-		this._gallery.find('div.'+this.settings.start_pos).delay(1800).slideDown();    
+		this._gallery.find('div.gallery-caption-shade-start').show().delay(1000).switchClass('gallery-caption-shade-start', 'gallery-caption-shade', 500);
+		this._gallery.find('div.'+this.settings.start_pos).delay(1500).slideDown();    
+		
 		
 		this._gallery.find('nav li').bind({
 			click : function(){
@@ -365,7 +399,8 @@ RBC.home.gallery = {
 	   		click : function(){
 		    	RBC.home.gallery.moveTo($(this).attr('class').split(' ')[0]);
 			}
-		})
+		});
+		
 	   	
 	},  
 
@@ -442,13 +477,75 @@ $(document).ready(function() {
 	}           
 	
 	if ($('#index-gallery').length>0){
-		
 		RBC.home.gallery.run();
 	}
    
 	if ($('nav#admin').length>0){ 
 		RBC.admin.nav.run($('nav#admin'),$('nav#admin a'));
-	}  	
+	}  	  
+	
+	if ($('table#admin-gallery').length>0){
+		RBC.admin.gallery.run();
+	}        
+	
+	if ($('#admin-program-list').length>0){ 	
+		$('input:checkbox').checkbox().bind({
+			click:function(){
+				var pid = $(this).attr('class').split(' ')[0],
+				    p_status; 
+				if ($(this).attr('checked') == "checked"){
+					p_status = 0;
+				} else {
+					p_status = 1;
+				};     
+
+				$.get(
+					"/admin/programactive",
+					{state:"update", p_status:p_status, pid:pid},
+					function(response){
+						if(response == 1){
+							$.jGrowl("Program status saved.",{
+								animateOpen: {
+									opacity: 'show'
+								}
+							});
+						} else {
+							$.jGrowl("An error has happen, please contact administrator.",{
+								animateOpen: {
+									opacity: 'show'
+								}
+							});
+						};
+					}
+				)
+			}
+		});
+
+
+		$('a.program-detail').bind({
+			click : function(){
+				id = $(this).attr('class').split(" ")[0];
+				RBC.admin.program.displayAll(id, $(".program_left"),  $(".program_right"));
+				return false;
+			}
+		});
+
+		$('a.program-paypal').bind({
+			click : function(){
+				$('#form-admin-paypal').dialog( "destroy" );
+				id = $(this).attr('class').split(" ")[0];
+				RBC.admin.program.paypal(id);
+				return false;
+			}
+		}); 
+
+		$('a.program-add').bind({
+			click: function(){
+				RBC.admin.program.addProgram($(this));
+			}
+		})
+
+	};
 	
 	if ($('#progress-header').length>0) {
 		(function userProgress() {
@@ -623,65 +720,6 @@ $(document).ready(function() {
 		}
 		chgpwd();
 	}
-	
-	if ($('#admin-program-list').length>0){ 	
-		$('input:checkbox').checkbox().bind({
-			click:function(){
-				var pid = $(this).attr('class').split(' ')[0],
-				    p_status; 
-				if ($(this).attr('checked') == "checked"){
-					p_status = 0;
-				} else {
-					p_status = 1;
-				};     
-				
-				$.get(
-					"/admin/programactive",
-					{state:"update", p_status:p_status, pid:pid},
-					function(response){
-						if(response == 1){
-							$.jGrowl("Program status saved.",{
-								animateOpen: {
-									opacity: 'show'
-								}
-							});
-						} else {
-							$.jGrowl("An error has happen, please contact administrator.",{
-								animateOpen: {
-									opacity: 'show'
-								}
-							});
-						};
-					}
-				)
-			}
-		});
-		 
-		
-		$('a.program-detail').bind({
-			click : function(){
-				id = $(this).attr('class').split(" ")[0];
-				RBC.admin.program.displayAll(id, $(".program_left"),  $(".program_right"));
-				return false;
-			}
-		});
-		
-		$('a.program-paypal').bind({
-			click : function(){
-				$('#form-admin-paypal').dialog( "destroy" );
-				id = $(this).attr('class').split(" ")[0];
-				RBC.admin.program.paypal(id);
-				return false;
-			}
-		}); 
-		
-		$('a.program-add').bind({
-			click: function(){
-				RBC.admin.program.addProgram($(this));
-			}
-		})
-		
-	};  
 	
 	if ($('table#admin-client').length>0){
 		$('#admin-client-detail > div').hide();
@@ -1015,7 +1053,6 @@ $(document).ready(function() {
 								 });
 							}
 						)
-						
 					}
 				}
 			})
@@ -1080,67 +1117,7 @@ $(document).ready(function() {
 		});
 			 
 		
-	}; 
-		
-	globalVars={
-		init:function(){
-			this.initially=[];
-			for(var i in window){this.initially[i]=true};
-		},
-		get:function(x){
-			var win=window;
-			if(navigator.userAgent.toLowerCase().indexOf("msie")>=0 && window["ActiveXObject"]){
-				win=this.ieFix()
-			};
-			var obj={};
-			var ffx=',addEventListener,location,document,navigator,event,frames,';
-			for(var i in win){
-				if(i=="fullScreen"){continue};
-				var a=true;
-				if(this.initially[i] && typeof window[i]=="function"){this.initially[i]=false};
-				a=a && !(this.initially[i]);
-				a=a && !(window[i]===undefined);
-				a=a && !(window[i]===null);
-				a=a && (i.indexOf("[[")<0);
-				a=a && (window[i]+"").indexOf("[native code]")<0;
-				var b=a;
-				a=a && (window[i]+"").indexOf("[object HTML")!=0;
-				if(a!=b){b=false} else {b=true};
-				a=a && (window[i]+"").indexOf("[object Window")!=0;
-				a=a && (window[i]+"").indexOf("[object]")!=0;
-				a=a && ((window[i]+"")!="[function]");
-				a=a && ((window[i]+"")!="(Internal Function)");
-				a=a && (!(typeof window[i]=="function" && (window[i]+"").indexOf("<Logger")==0));
-				a=a && (i!="NaN");
-				a=a && (i!="0" && i!="1");		
-				a=a && (i!="Infinity");
-				a=a && (i!="Math");
-				a=a && ffx.indexOf(','+i+',')<0;
-				if(x && b){a=true};
-				if (a){obj[i]=window[i]};
-			};
-			obj["globalVars"]=globalVars;
-			if(window["onload"]){obj.onload=onload};
-			return obj
-		},
-		getAll:function(){return this.get(true)},
-		getOwn:function(){return this.get()},
-		print:function(){
-			var win=globalVars.getOwn();  /*returns an object containing global variables*/
-			var x=[];
-			for (var i in win){x.push(i)};
-			console.log(x.join("\n"));
-		},
-		printAll:function(){
-			var win=globalVars.getAll(); 
-			var x=[];
-			for (var i in win){x.push(i)};
-			console.log(x.join("\n"));
-		}
-	};    
-	
-	globalVars.init();
-	
+	};     
 	
 	//buttons
 	//var timer_before, timer_after, timer_total;

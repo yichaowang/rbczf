@@ -1,26 +1,24 @@
 <div id="main-wrapper" class="clearfix admin">
-	<div class="grid_9">
-		<div class="white">
-			<div id="admin-testimonials" class="grid_9">
-				<h1>Testimonials</h1> 
-				<?php echo $this->partial('admin/nav_partial.phtml')?> 
-			</div>   
-			<div class="clear"></div>
-			<div class="grid_9"> 
-				<?php foreach ($this->testimonials as $testimonial){?>
-				<div class="admin-testimonials-wrapper <?=$testimonial->id?>">
-					<div class="grid_3">
-						<span class="tm-name"><?=$testimonial->name?></span><br>
-						<span class="tm-from"><?=$testimonial->from?></span>
-					</div>
-					<div class="grid_5">
-						<p class="tm-value"><?=$testimonial->content?></p>
-					</div>
-					<div class="clear"></div>
+	<div class="white">
+		<div id="admin-testimonials" class="grid_9">
+			<h1>Testimonials</h1> 
+			<?php echo $this->partial('admin/nav_partial.phtml')?> 
+		</div>   
+		<div class="clear"></div>
+		<div class="grid_8"> 
+			<?php foreach ($this->testimonials as $testimonial){?>
+			<div class="admin-testimonials-wrapper <?=$testimonial->id?>">
+				<div class="grid_3">
+					<span class="tm-name"><?=$testimonial->name?></span><br>
+					<span class="tm-from"><?=$testimonial->from?></span>
 				</div>
-				<?php }?>
- 			</div> 
-			<div class="clear"></div>
-		</div>
+				<div class="grid_5">
+					<p class="tm-value"><?=$testimonial->content?></p>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<?php }?>
+			</div> 
+		<div class="clear"></div>  
 	</div>
 </div>

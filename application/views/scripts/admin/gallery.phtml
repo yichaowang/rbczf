@@ -1,0 +1,30 @@
+<div id="main-wrapper" class="clearfix"> 
+	<div class="white">
+		<div class="grid_8">
+			<h1>Gallery</h1> 
+			<?php echo $this->partial('admin/nav_partial.phtml')?>   
+			<form enctype="multipart/form-data" action="/admin/galleryupload" method="POST">
+				<input type="hidden" name="MAX_FILE_SIZE" value="10485760" /><!-- 10MB-->
+				Upload this file: <input name="ufile" type="file" />     
+				<input type="submit" value="Send File">
+			</form>
+			<br>
+			<table id='admin-gallery'> 
+				<tr>
+					<th width="33%">Image Preview</th>
+					<th width="41%">Caption</th>
+					<th width="9%">Sequence</th>
+					<th width="17%">Action</th>
+				</tr>   
+				<?php foreach ($this->gallery as $picture){ ?>
+				<tr class="<?echo $picture['id']?>">
+					<td class="preview"><img width="100%" src="<?echo '/'.$picture['src']?>"></td>
+					<td class="caption"><?=$picture['caption']?></td> 
+					<td class="seq"><?=$picture['seq']?></td>
+					<td class="modify"><span class='icon-delete'></span></td>
+				 </tr> 
+				<?php }?>
+			</table>
+		</div>   
+	</div>
+</div>
