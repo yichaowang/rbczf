@@ -316,7 +316,7 @@ RBC.admin.gallery = {
 	
 	del : function(id){
 		$.get("/admin/galleryupdate",{
-			id: id, delete:1
+			id: id, del:1
 		}, function(){
 			location.reload();
 		})

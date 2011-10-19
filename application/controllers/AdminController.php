@@ -728,7 +728,7 @@ class AdminController extends Zend_Controller_Action
 		$id = $this->_getParam('id');
 		$item = $this->_getParam('item');
 		$value = $this->_getParam('value');
-		$delete = $this->_getParam('delete');
+		$delete = $this->_getParam('del');
 	    
 		$gallery_model = new Application_Model_Gallery;
 		$gallery_row = $gallery_model->find($id)->current();
