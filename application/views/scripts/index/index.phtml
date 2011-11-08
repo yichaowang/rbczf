@@ -1,25 +1,48 @@
 <div id="main-wrapper-index" class="clearfix">
 	<div id="index-gallery">
+		<!--
 		<?php foreach ($this->gallery as $picture){?>
-			<figure><img src="<?echo '/'.$picture['src']?>"></figure>
-			<div class="pic-caption"><?=$picture['caption']?></div>
-		<?php } ?>    
-		<nav>
-			<ul>
-				<?php 
-				foreach ($this->gallery as $picture){?>
-				<li></li>
+					<figure><img src="<?echo '/'.$picture['src']?>"></figure>
+					<div class="pic-caption"><?=$picture['caption']?></div>
 				<?php } ?>    
-			</ul>
-		</nav>
-		<div class="gallery-caption-shade-start"></div>
+				<nav>
+					<ul>
+						<?php 
+						foreach ($this->gallery as $picture){?>
+						<li></li>
+						<?php } ?>    
+					</ul>
+				</nav>
+				<div class="gallery-caption-shade-start"></div> -->
+		<figure><img src="/images/gallery-index/slide_1.png" width="753px" height="350px" title="left"></figure>
+		<div class="pic-caption-left">
+			<h1>Bootcamp Classes</h1>
+			<h2>Get down and dirty with bootcamp</h2>
+			<a href="#">more</a>
+		</div>
+		<figure><img src="/images/gallery-index/slide_2.png" width="753px" height="350px"></figure>
+		<div class="pic-caption">
+			<h1>TR-XBOX</h1>
+	    	<h2>Strong is the new Skinny</h2>
+		</div>
+		<figure><img src="/images/gallery-index/slide_3.png" width="753px" height="350px"></figure>
+		<div class="pic-caption">
+			<h1>Pilate Class</h1>
+	    	<h2>Are you in the Pilate Loop</h2>
+		</div> 
+		<ul> 
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<div class="gallery-caption-shade-left"></div>
 	</div>
 	<div class="clear"></div>
 	<div id="index-main">
 		<div id="index-swapbox">
 			<section class="welcome">
 				<h1><b>STRONG</b> IS THE NEW <em>SKINNY</em></h1>
-				<?=$this->intro->value?>
+				<p><?=$this->intro->value?></p>
 				<iframe id='google-cal' src="https://www.google.com/calendar/embed?mode=AGENDA&amp;src=renewalbodybootcamp%40gmail.com&ctz=America/New_York" style="border: 0" width="520" height="160" frameborder="0" scrolling="no"></iframe> 
 			</section>
 			<?php
@@ -31,7 +54,7 @@
 				<h1><?=$program->name;?></h1>
 				<label>Classes / Series Description:</label>
 				<div class="description">
-					<?=$program->description?>
+					<p><?=$program->description?></p>
 				</div>
 				<label>Prices:</label>
 				<div>
@@ -60,7 +83,9 @@
 				}}; ?>
 					<li class="back"><a href="#">&lsaquo;&lsaquo; back</a></li>
 			</ul>	
-		</nav>
+		</nav> 
 	</div>
+	<div class="clear"></div>
 </div>
+<div class="clear"></div>
 
