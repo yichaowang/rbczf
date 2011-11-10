@@ -388,23 +388,26 @@ RBC.home.gallery = {
         }
         this.setGallery();
         this.setSize();
-        this.prep();  
+        this.prep();                                                                 
         
-        this._gallery.find('figure.'+this.settings.start_pos).delay(500).fadeIn(1000).find('.pic-caption').hide().delay(2000).fadeIn(1500, function(){
+        this._gallery.find('figure.'+this.settings.start_pos).find('img').delay(500).fadeIn(1000).next().delay(1000).fadeTo(0,1).find('.caption-shade').delay(1500).fadeTo(1500,0.5).siblings('.caption-text').delay(1700).fadeTo(2500,1, function(){
            RBC.home.gallery.nextslide = setTimeout(function(){
                 RBC.home.gallery.moveTo(RBC.home.gallery.next(RBC.home.gallery.getActive()));
-           },5500)
-        }).find('div.loading-start').delay(4500).switchClass('loading-start','loading-end',5000);  
-        this._gallery.find('figure.'+this.prev(this.settings.start_pos)).delay(500).fadeTo(1500,0.3).bind({
-	        mouseenter: function(){$(this).stop().fadeTo(200,1).css('cursor', 'pointer');},
-	        mouseleave: function(){$(this).stop().fadeTo(200,0.3).css('cursor', 'auto');},
-	        click: function(){RBC.home.gallery.moveTo(RBC.home.gallery.prev(RBC.home.gallery.getActive()));}
-	    });
-        this._gallery.find('figure.'+this.next(this.settings.start_pos)).delay(500).fadeTo(1500,0.3).bind({
-	        mouseenter: function(){$(this).stop().fadeTo(200,1).css('cursor', 'pointer');},
-	        mouseleave: function(){$(this).stop().fadeTo(200,0.3).css('cursor', 'auto');},
-	        click: function(){RBC.home.gallery.moveTo(RBC.home.gallery.next(RBC.home.gallery.getActive()));}
-	    });
+           },6500)  
+        }).siblings('div.loading-start').delay(3500).fadeTo(0,1).delay(2000).switchClass('loading-start','loading-end',5000);;
+
+        this._gallery.find('figure.'+this.prev(this.settings.start_pos)).find('img').delay(500).fadeTo(1000,1).delay(500).fadeTo(500, 0.3).bind({
+            mouseenter: function(){$(this).stop().fadeTo(200,1).css('cursor', 'pointer');},
+            mouseleave: function(){$(this).stop().fadeTo(200,0.3).css('cursor', 'auto');},
+            click: function(){RBC.home.gallery.moveTo(RBC.home.gallery.prev(RBC.home.gallery.getActive()));}
+        });                
+
+        this._gallery.find('figure.'+this.next(this.settings.start_pos)).find('img').delay(500).fadeTo(1000,1).delay(500).fadeTo(500, 0.3).bind({
+            mouseenter: function(){$(this).stop().fadeTo(200,1).css('cursor', 'pointer');},
+            mouseleave: function(){$(this).stop().fadeTo(200,0.3).css('cursor', 'auto');},
+            click: function(){RBC.home.gallery.moveTo(RBC.home.gallery.next(RBC.home.gallery.getActive()));}
+        }); 
+
     },  
 
     prep : function(){
@@ -414,19 +417,14 @@ RBC.home.gallery = {
         // calculate total width
         this._gallery.find('div#index-gallery-slidingbox').width(tol_width);    
          
-        // add index to li
-        this._gallerynav.find('li').each(function(index){
-            $(this).addClass(index.toString())
-        });
         // add index to figure and caption    
         $(figures).each(function(index){
             $(this).addClass(index.toString());
-            $(this).next('div.pic-caption').addClass(index.toString());
-        }) 
-             
-        figures.hide();
-        $('div.pic-caption').hide();
-
+        })                
+        
+        $(figures).find('img').hide();
+        $(figures).find('.loading-start').hide();   
+        
         this._gallery.find('figure.'+this.settings.start_pos).addClass('active');
     },  
     
@@ -439,40 +437,41 @@ RBC.home.gallery = {
         
         clearTimeout(RBC.home.gallery.nextslide);
 
-        this._gallery.find('figure').unbind();
-        this._gallery.find('figure.active').removeClass('active').find('div.pic-caption').hide();
+        this._gallery.find('figure img').stop(true,true).fadeTo(0,1.0).unbind();
+        this._gallery.find('figure img').next('div').stop(true,true).hide().find('div.caption-text').stop(true,true).hide().siblings('div.caption-shade').stop(true,true).hide().siblings('div.loading-start').stop(true,true).hide();
+        this._gallery.find('.loading-end').removeClass('loading-end').addClass('loading-start');  
+        
+        this._gallery.find('figure.active').removeClass('active');
         this._gallery.find('figure.'+index).addClass('active'); 
 
         this._slidingbox.css('left', pos_left_start);
-        this._gallery.find('figure').fadeTo(300,1);
-        this._gallery.find('.loading-end').removeClass('loading-end').addClass('loading-start');  
         
 	    this._slidingbox.animate({
 			'left': parseInt(pos_left_end)
 		},800,function(){
-		    $(this).find('figure.'+RBC.home.gallery.prev(index)).fadeTo(1500,0.3).bind({
+		    $(this).find('figure.active').find('img').fadeTo(1000,1).next().fadeTo(0,1).find('.caption-shade').delay(500).fadeTo(1500, 0.5).siblings('.caption-text').delay(1000).fadeTo(2500,1, function(){
+                RBC.home.gallery.nextslide = setTimeout(function(){
+                    RBC.home.gallery.moveTo(RBC.home.gallery.next(index));
+                },6500)
+            }).siblings('div.loading-start').delay(2500).fadeTo(0,1).delay(2000).switchClass('loading-start','loading-end',5000);  
+            
+		    
+		    $(this).find('figure.'+RBC.home.gallery.prev(index)).find('img').fadeTo(1500,0.3).bind({
     	        mouseenter: function(){$(this).stop().fadeTo(200,1).css('cursor', 'pointer');},
     	        mouseleave: function(){$(this).stop().fadeTo(200,0.3).css('cursor', 'auto');},
     	        click: function(){
-    	            RBC.home.gallery._gallery.find('figure').unbind().find('.pic-caption').stop(true,true).find('div.loading-start').stop(true,true); 
     	            clearTimeout(RBC.home.gallery.nextslide);
     	            RBC.home.gallery.moveTo(RBC.home.gallery.prev(index));
     	        }
     	    });
-		    $(this).find('figure.'+RBC.home.gallery.next(index)).fadeTo(1000,0.3).bind({
+		    $(this).find('figure.'+RBC.home.gallery.next(index)).find('img').fadeTo(1000,0.3).bind({
     	        mouseenter: function(){$(this).stop().fadeTo(200,1).css('cursor', 'pointer');},
     	        mouseleave: function(){$(this).stop().fadeTo(200,0.3).css('cursor', 'auto');},
     	        click: function(){
-    	            RBC.home.gallery._gallery.find('figure').unbind().find('.pic-caption').stop(true,true).find('div.loading-start').stop(true,true); 
     	            clearTimeout(RBC.home.gallery.nextslide);
     	            RBC.home.gallery.moveTo(RBC.home.gallery.next(index));
     	        }
     	    });
-		    $(this).find('figure.active').find('.pic-caption').delay(500).fadeIn(1500, function(){
-                RBC.home.gallery.nextslide = setTimeout(function(){
-                    RBC.home.gallery.moveTo(RBC.home.gallery.next(index));
-                },5500)
-            }).find('div.loading-start').delay(2500).switchClass('loading-start','loading-end',5000);
 		    
 		});
     },

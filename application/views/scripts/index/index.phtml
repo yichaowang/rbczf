@@ -3,7 +3,6 @@
 		<div id="index-gallery-slidingbox">
 			<figure>
 				<img src="/images/gallery-index/slide_2.png" width="753px" height="350px"> 
-				<div class="pic-caption">
 					<div class="pic-caption-right">
 						<div class="caption-text">
 							<h1>TR-XBOX Classes</h1>
@@ -13,25 +12,21 @@
 						<div class="caption-shade"></div>
 						<div class="loading-start"></div>     
 					</div>
-				</div>
 			</figure>
 			<figure>
 				<img src="/images/gallery-index/slide_6.png" width="753px" height="350px"> 
-				<div class="pic-caption">
-					<div class="pic-caption-left">
-						<div class="caption-text">
-							<h1>TRX&#8482 Classes</h1>
-							<h2>Are you up for the TRX challenge?</h2>
-							<!-- <a href="#">more</a>  -->
-						</div>
-						<div class="caption-shade"></div>
-						<div class="loading-start"></div>     
+				<div class="pic-caption-left">
+					<div class="caption-text">
+						<h1>TRX&#8482 Classes</h1>
+						<h2>Are you up for the TRX challenge?</h2>
+						<!-- <a href="#">more</a>  -->
 					</div>
-				</div>
+					<div class="caption-shade"></div>
+					<div class="loading-start"></div>     
+				</div>  
 			</figure>
 			<figure>
 				<img src="/images/gallery-index/slide_5.png" width="753px" height="350px"> 
-				<div class="pic-caption">
 					<div class="pic-caption-left">
 						<div class="caption-text">
 							<h1>TRX&#8482 Classes</h1>
@@ -41,12 +36,10 @@
 						<div class="caption-shade"></div>
 						<div class="loading-start"></div>     
 					</div>
-				</div>
 			</figure>    
 			<figure>
 				<img src="/images/gallery-index/slide_1.png" width="753px" height="350px" title="left">
-				<div class="pic-caption">
-			   	 <div class="pic-caption-left">
+			   	 	<div class="pic-caption-left">
 						<div class="caption-text">
 							<h1>Bootcamp Classes</h1>
 							<h2>Get down and dirty with bootcamp.</h2>
@@ -55,44 +48,33 @@
 						<div class="caption-shade"></div>
 						<div class="loading-start"></div>     
 					</div>
-				</div>
 			</figure>
 			
 			<figure>
 				<img src="/images/gallery-index/slide_3.png" width="753px" height="350px">
-				<div class="pic-caption">
 					<div class="pic-caption-left">
 						<div class="caption-text">
-							<h1>Pilate Classes</h1>
-							<h2>Are you in the Pilate Loop?</h2>
+							<h1>Pilates Classes</h1>
+							<h2>Are you in the Pilates Loop?</h2>
 							<!-- <a href="#">more</a>  -->
 						</div>
 						<div class="caption-shade"></div>
 						<div class="loading-start"></div>     
 					</div> 
-				</div>
 			</figure> 
 			
 			<figure>
 				<img src="/images/gallery-index/slide_4.png" width="753px" height="350px">
-				<div class="pic-caption">
 					<div class="pic-caption-right">
 						<div class="caption-text">
 							<h1>Boxing Fitness Classes</h1>
-							<h2>Get a knockout workout with Fitness Boxing.</h2>
+							<h2>Get a knockout workout with Boxing Fitness.</h2>
 							<!-- <a href="#">more</a>  -->
 						</div>
 						<div class="caption-shade"></div>
 						<div class="loading-start"></div>     
 					</div> 
-				</div>
 			</figure>
-			
-			<ul> 
-				<li></li>
-				<li></li>
-				<li></li>
-			</ul>
 		</div> 
 		
 		
@@ -112,7 +94,22 @@
 		<div class="gallery-caption-shade-start"></div> -->
 	</div>
 	<div class="clear"></div>
-	<div id="index-main">
+	<div id="index-main"> 
+		<nav class="swapbox">
+			<ul class="signup-list">
+				<?php
+				 	$u = 0;
+					foreach ($this->programs as $program){
+					 
+					if ($program->active == 1){
+				?>
+                    <li class="<?=$u;?>"><a href="#"><?=$program->name;?></a></li>
+				<?php 
+					$u++;
+				}}; ?>
+					<li class="back"><a href="#">&lsaquo;&lsaquo; back</a></li>
+			</ul>	
+		</nav>
 		<div id="index-swapbox">
 			<section class="welcome">
 				<h1><b>STRONG</b> IS THE NEW <em>SKINNY</em></h1>
@@ -143,21 +140,7 @@
 				$m++;
 			}}; ?>
 		</div>
-		<nav class="swapbox">
-			<ul class="signup-list">
-				<?php
-				 	$u = 0;
-					foreach ($this->programs as $program){
-					 
-					if ($program->active == 1){
-				?>
-                    <li class="<?=$u;?>"><a href="#"><?=$program->name;?></a></li>
-				<?php 
-					$u++;
-				}}; ?>
-					<li class="back"><a href="#">&lsaquo;&lsaquo; back</a></li>
-			</ul>	
-		</nav> 
+		
 	</div>
 </div>
 
