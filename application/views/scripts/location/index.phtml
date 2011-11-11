@@ -1,9 +1,12 @@
 <?php $this->placeholder('page')->set("location") ?>
 
 <div id="main-wrapper" class="clearfix">
-	<div class="white">
+	<div class="inner-wrapper" id="location-front">
 		<div class="grid_4">
-			<img style="padding-top: 10px"src="/images/logo-blue.png">
+			<header>
+				<h1>Location <span>/ Where are we?</span></h1>
+			</header>
+			<img class="logo" src="/images/logo-blue.png">
 			<p><?php echo $this->description;?></p>
 			<p> 
 				<?php echo ($this->hour != null) ? "Hours:<br>".$this->hour."<br/>":""; ?>
@@ -17,8 +20,7 @@
 			</p>
 		</div> 
 		<div class="grid_3">
-			
-			<a href="http://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=100+Youell+Ave+SE+Grand+Rapids,+MI,+49506&aq=&sll=42.960945,-85.63587&sspn=0.009626,0.014634&ie=UTF8&hq=&hnear=100+Youell+Ave+SE,+Grand+Rapids,+Michigan+49506&z=16&iwloc=A"><img style="padding-top:10px; padding-bottom:10px" src="http://maps.google.com/maps/api/staticmap?center=Grand+Rapids,MI&zoom=12&size=400x300&maptype=roadmap
+			<a class='map' href="http://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=100+Youell+Ave+SE+Grand+Rapids,+MI,+49506&aq=&sll=42.960945,-85.63587&sspn=0.009626,0.014634&ie=UTF8&hq=&hnear=100+Youell+Ave+SE,+Grand+Rapids,+Michigan+49506&z=16&iwloc=A"><img  src="http://maps.google.com/maps/api/staticmap?center=Grand+Rapids,MI&zoom=12&size=400x300&maptype=roadmap
 			&markers=color:blue%7Clabel:A%7C42.960945,-85.63587&sensor=true"></img>
 			</a>
 		</div>

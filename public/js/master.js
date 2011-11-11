@@ -334,6 +334,7 @@ RBC.home.swapbox = {
 				var swapbox_top_pos_end = (-1) * postion_end * section_height,
 				 	swapbox_top_pos_start = (-1) * postion_end * section_height + ((postion_start > postion_end) ? -1 : 1) * 600;
 				
+				swapbox_ele.stop(true,true);
 				control_nav.find('.active').removeClass('active');
                 
 				if ($(this).attr('class')=='back'){  
@@ -355,6 +356,18 @@ RBC.home.swapbox = {
 				
 				control_nav.find('.back').show();
 				return false;
+			},
+			mouseenter: function(){
+			    $(this).find('a').stop().animate({'color':'#41abc1'},500);
+			},
+			mouseleave: function(){
+			    $(this).find('a').stop().css('color','#0795b3');
+			},
+			mousedown: function(){
+			    $(this).find('a').stop().css('color','#c4799e');
+			},
+			mouseup: function(){
+			    $(this).find('a').stop().animate({'color':'#0795b3'},300);
 			}
 		})
 	}

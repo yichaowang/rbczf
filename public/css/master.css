@@ -6,12 +6,13 @@
 */
 body{
 	color: #363636;
-	font: 12px/18px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	font: 12px/18px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Verdana, sans-serif;
 	background: #191919 url("../images/bg-body.png") repeat left top;
 	padding-bottom:90px;
 }
 
 	body p{
+	    font: 14px/21px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Verdana, sans-serif;
 		font-size: 1.35em;
 		line-height:1.45;
 		color :#484848;  
@@ -19,7 +20,7 @@ body{
 	}
     
 h1,h2,h3,h4{
-	font-family: "Droid Sans", sans-serif;
+	font-family: "Droid Sans", Helvetica, Verdana, sans-serif;
 } 
 
 h1{  
@@ -37,6 +38,19 @@ h2{
 h3{
 	font-size:1em;
 	color: #0795b3;
+}    
+
+header {
+    margin-bottom:10px;
+}   
+
+header h1{
+    font: 36px/46px 'Contrail One', Helvetica, Verdana, sans-serif;
+}   
+
+header span{
+    font: 26px/39px "Nixie One", Helvetica, Verdana, sans-serif;
+    color:#363636;
 }
 
 dt label{
@@ -63,11 +77,15 @@ div.label-list span{
 a {
 	font-weight:bold;
 	color: #0795b3;
+}
+
+a:hover{
+    color: #41abc1
 } 
 
 li a{
     text-decoration:none;
-}                      
+}                   
    
 article,aside,details,figcaption,figure,
 footer,header,hgroup,menu,nav,section { 
@@ -106,21 +124,21 @@ div#banner{
 }
 
 div#main-wrapper {
-	padding:16px 0px 16px 0px;
-	background: #3cd4eb;
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.05, rgb(37,142,156)),
-		color-stop(0.53, rgb(60,212,235))
-		);
-   	background-image: -moz-linear-gradient(
-		center bottom,
-		rgb(37,142,156) 5%,
-		rgb(60,212,235) 53%
-	);    
-} 
+	padding:8px 0px 0px 0px;
+	background: #3cd4eb;   
+}  
+
+div.inner-wrapper{
+    background:#fdfdfd url('/images/bg-pattern2.png') repeat;  
+    display:inline;
+	float: left;
+	position: relative;
+	width:890px;
+	border-left:5px solid #ddd;
+	border-right:5px solid #ddd;
+	padding-top:30px;
+	padding-bottom:70px;
+}
 
 div#welcome{
 	background-color:#fff;
@@ -404,7 +422,12 @@ nav.swapbox ul li a{
 	font-size:20px; 
 	line-height:30px;
 	color:#0795b3;
-}
+} 
+
+nav.swapbox ul li a:active{
+    color:#c4799e; 
+} 
+  
 
 nav.swapbox ul li a.active{
 	background: url('/images/bg-index-caret.png') no-repeat 0% 50%;
@@ -477,7 +500,12 @@ div#navigation li a.about{
 
 /*
 	Front - Progress
-*/          
+*/                   
+
+div#progress-client-login{
+    
+}   
+
 div#progress-header {
 	padding-top:10px; 
 	padding-bottom:10px;
@@ -563,52 +591,62 @@ div.progress-meter-bottom{
 	margin-left:1px;
 	height:50px;
 	width:279px;
-}        
+}   
+
+/*
+    Front - Location
+*/                  
+div#location-front img.logo{
+    padding:20px 0 10px 0;
+    width:200px;
+    height:55px;
+}  
+
+div#location-front a.map img{ 
+    margin-top:15px;
+    border:2px solid #ddd;
+}
 
 /*
 	Front - Testimonials
-*/              
+*/   
 
-.talkbubble-wrapper{
-	padding-top:20px;
-	width:668px;
-}
+div#testimonials-front header{
+    margin-bottom:20px;
+}             
+    div#testimonials-front div.test-front-wrapper{
+        padding:30px 0px;
+    } 
 
-.talkbubble-wrapper .bub-top{                          
-	height:20px;
-	background:url("/images/bg-bub-top.png") no-repeat;
-}  
-
-.talkbubble-wrapper .bub-mid{
-	padding:0 20px;
-	width:628px;                          
-	background-color:#ededed;
-} 
-
-.talkbubble-wrapper .bub-mid h2{
-	font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
-	font-size:18px;
-	margin:0;
-	padding:5px 0;
-} 
-
-.talkbubble-wrapper .bub-mid h2 span{
-	color:#8D1C1C;
-	font-size:12px;
-	margin:0;
-	padding:5px 0;
-}
-
-.talkbubble-wrapper .bub-mid p{
-	margin:0;
-	padding:5px 0;
-}
-
-.talkbubble-wrapper .bub-btm{                          
-	height:40px;
-	background:url("/images/bg-bub-btm.png") no-repeat;
-}
-
+    div.test-front-wrapper .grid_2{
+        border-top:4px solid #ddd;
+        padding-top:8px;
+    }
+    div.test-front-wrapper .grid_6{
+        padding-top:1px;
+    } 
+    
+    div.test-front-wrapper div.client-name{
+        font:16px/36px Georgia, 'Times New Roman', serif;
+        color: #586b79;
+    }  
+    
+    div.test-front-wrapper div.client-title{
+        font:13px/21px "Droid Sans", Helvetica, Verdana, sans-serif;
+        color: #586b79;
+    }    
+    
+    div.test-front-wrapper .grid_6 p{
+        font:14px/21px "Droid Sans", Helvetica, Verdana, sans-serif;
+    }  
+    
+    div.test-front-wrapper .grid_6 p.highlight{
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size:16px;
+        line-height:24px;
+        font-style:italic;
+        color:#369;
+    }
 
 /*
 	Front - About 
@@ -616,7 +654,7 @@ div.progress-meter-bottom{
 img.aboutpic{
 	float:right;
 	padding:30px 0 30px 30px;
-}
+}  
  
 /*
 	Admin - General
@@ -914,14 +952,13 @@ table#admin-gallery{
 
 .white{
 	display:inline;
+	background:#fdfdfd;
 	float: left;
 	position: relative;
-	background:#fff;
-	width:860px;
-	margin:0 15px;
-	padding-top:10px;
-	padding-left:5px;
-	padding-right:5px;
+	width:890px;
+	border-left:5px solid #ddd;
+	border-right:5px solid #ddd;
+	padding-top:30px;
 	padding-bottom:70px;
 } 
 
