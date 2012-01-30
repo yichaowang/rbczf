@@ -11,7 +11,7 @@ class TestimonialsController extends Zend_Controller_Action
     public function indexAction()
     {
 	 	$testimonial_model = new Application_Model_Testimonials();                           
-		$this->view->testimonials= $testimonial_model->fetchAll();
+		$this->view->testimonials= $testimonial_model->fetchAll($testimonial_model->select()->order('id ASC'));
     }
 
 

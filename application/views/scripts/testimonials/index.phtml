@@ -2,7 +2,7 @@
 <div id="main-wrapper" class="clearfix"> 
 	<div class="inner-wrapper" id="testimonials-front">
 		<header class="grid_9">
-			<h1>Testimonials <span>/ What Our Members Think About Us</span></h1>
+			<h1>TESTIMONIALS <span>/ What Our Members Think About Us</span></h1>
 		</header>
 		<div class="clear"></div>
 		<?php foreach ($this->testimonials as $testimonial) {?>  
@@ -12,7 +12,7 @@
 				<div class="client-title"><?=$testimonial->from?></div>
 			</div>
 			<div class="grid_6 omega">
-			    <p><?=$testimonial->content?></p>	
+			    <?=$testimonial->content?>	
 			</div>
 			<div class="clear"></div>
 		</div> 

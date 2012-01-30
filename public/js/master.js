@@ -61,20 +61,25 @@ RBC.admin.program =(function (){
 				buttons: {
 					Update : function(){
 						var paypal = $(this).find('textarea[name=paypal_code]').val().trim(),
-							preview_ele = $(this).find('div.paypal-preview');
-						$.post('/admin/programpaypal', {id:id, req:'update', paypal:paypal},function(response){ 
-							console.log(response);
-							if(response == 1){
-								$.jGrowl("Paypal button saved.",{animateOpen:{opacity: 'show'}});
-								preview_ele.empty().html("<div class='icon-loading-middle'></div>");
-								$.get('/admin/programpaypal', {id:id,req:'preview'},function(paypal_update){
-									var paypal_btn = $(paypal_update).find('div.paypal-preview');
-									preview_ele.html(paypal_btn);
-								});					
-							}else{
-								$.jGrowl("An error occured. Please contact admainistrator.")
-							};
-						})
+							preview_ele = $(this).find('div.paypal-preview');   
+							
+                        // console.log(paypal);
+						
+                        $.post('/admin/programpaypal', {id:id, req:'update', paypal:paypal},function(response){ 
+                            // console.log(response);
+                            if(response == 1){
+                                $.jGrowl("Paypal button saved.",{animateOpen:{opacity: 'show'}});
+                                preview_ele.empty().html("<div class='icon-loading-middle'></div>");
+                                $.get('/admin/programpaypal', {id:id,req:'preview'},function(paypal_update){
+                                    var paypal_btn = $(paypal_update).find('div.paypal-preview');
+                                    preview_ele.html(paypal_btn);
+                                });                 
+                            }else{
+                                $.jGrowl("An error occured. Please contact admainistrator.")
+                                console.log(response);
+                            };
+                        })
+						
 					},
 					Close : function(){
 						$(this).dialog("close");
@@ -996,16 +1001,16 @@ $(document).ready(function() {
 	 								if (measures[m]===""){
 										measures.splice(m,1);
 									}
-								}   
+								};   
 								
 								for (i=0; i < measures.length; i++){                   
 									measures_data[i] = {
 										name: measures[i].split(":")[0],
-										before: measures[i].split(":")[1].split(",")[0].trim(),
-										after : measures[i].split(":")[1].split(",")[1].trim(),
+										before: $.trim(measures[i].split(":")[1].split(",")[0]),
+										after : $.trim(measures[i].split(":")[1].split(",")[1]),
 										unit : measures[i].split(":")[2]
 									}
-								}
+								};
 
 								render(measures_data);
 							}					

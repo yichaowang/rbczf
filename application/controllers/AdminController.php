@@ -218,7 +218,9 @@ class AdminController extends Zend_Controller_Action
 			$this->getHelper('viewRenderer')->setNoRender(true);
 			$program_row->paypal = $paypal_code;
 			$program_row->save();
-			echo 1;
+			// echo 1;
+			
+			echo $paypal_code;
 		} 
 	}
 	
@@ -811,7 +813,7 @@ class AdminController extends Zend_Controller_Action
 		if ($sess->admingroup != "admin") $this->_redirect('/admin/login');
 		
 		$testimonials_model = new Application_Model_Testimonials;
-		$this->view->testimonials = $testimonials_model->fetchAll();  
+		$this->view->testimonials = $testimonials_model->fetchAll($testimonials_model->select()->order('id ASC')); 
 	}        
 	
 	public function updatetestimonialsAction(){

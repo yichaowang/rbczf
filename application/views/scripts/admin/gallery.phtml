@@ -1,7 +1,9 @@
 <div id="main-wrapper" class="clearfix"> 
 	<div class="white">
 		<div class="grid_8">
-			<h1>Gallery</h1> 
+			<header>
+				<h1>Administration <span>Gallery</span></h1>
+			</header>
 			<?php echo $this->partial('admin/nav_partial.phtml')?>   
 			<form enctype="multipart/form-data" action="/admin/galleryupload" method="POST">
 				<input type="hidden" name="MAX_FILE_SIZE" value="10485760" /><!-- 10MB-->

@@ -1,7 +1,9 @@
 <div id="main-wrapper" class="clearfix admin">
 	<div class="white">
 		<div id="admin-testimonials" class="grid_9">
-			<h1>Testimonials</h1> 
+			<header>
+				<h1>Administration <span>Testimonials</span></h1>
+			</header> 
 			<?php echo $this->partial('admin/nav_partial.phtml')?> 
 		</div>   
 		<div class="clear"></div>
@@ -13,7 +15,7 @@
 					<span class="tm-from"><?=$testimonial->from?></span>
 				</div>
 				<div class="grid_5">
-					<p class="tm-value"><?=$testimonial->content?></p>
+					<div class="tm-value"><?=$testimonial->content?></div>
 				</div>
 				<div class="clear"></div>
 			</div>
